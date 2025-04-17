@@ -122,6 +122,7 @@
             border-radius: 8px;
             width: 200px;
             text-align: left;
+            display: none; /* Start hidden */
         }
 
         #blue-menu button {
@@ -135,6 +136,12 @@
             background-color: #e74c3c;
         }
 
+        #show-password {
+            cursor: pointer;
+            margin-top: 10px;
+            color: #f39c12;
+            font-size: 1em;
+        }
     </style>
 </head>
 <body>
@@ -153,6 +160,7 @@
         <h2>Login</h2>
         <input type="email" id="login-email" placeholder="Email">
         <input type="password" id="login-password" placeholder="Password">
+        <span id="show-password" onclick="togglePassword('login-password')">Show Password</span>
         <button onclick="login()">Login</button>
     </div>
 
@@ -161,6 +169,7 @@
         <input type="email" id="register-email" placeholder="Email">
         <input type="text" id="register-username" placeholder="Username">
         <input type="password" id="register-password" placeholder="Password">
+        <span id="show-password-register" onclick="togglePassword('register-password')">Show Password</span>
         <button onclick="register()">Register</button>
     </div>
 
@@ -188,6 +197,15 @@
                 notif.style.opacity = 0;
                 setTimeout(() => notif.style.display = "none", 500);
             }, 3000);
+        }
+
+        function togglePassword(passwordFieldId) {
+            const passwordField = document.getElementById(passwordFieldId);
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+            } else {
+                passwordField.type = "password";
+            }
         }
 
         function showLoginForm() {
@@ -245,6 +263,7 @@
             document.getElementById("user-name").innerText = accountData.username;
             document.getElementById("user-email").innerText = accountData.email;
 
+            // Show the blue menu after login
             document.getElementById("blue-menu").style.display = "block";
         }
 
