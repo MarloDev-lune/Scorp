@@ -16,7 +16,7 @@
         #header {
             position: absolute;
             top: 20px;
-            right: 20px;
+            left: 20px;
             font-size: 0.8em;
             color: #f39c12;
         }
@@ -113,6 +113,33 @@
             display: none;
         }
 
+        #save-info-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #f39c12;
+            padding: 10px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+
+        #info-image {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 100px;
+            display: none;
+        }
+
+        #welcome-message {
+            animation: fadeInOut 2s infinite;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
     </style>
 </head>
 <body>
@@ -144,10 +171,14 @@
     </div>
 
     <div id="welcome-page">
-        <h2>Welcome, <span id="user-name"></span>!</h2>
+        <h2 id="welcome-message">Welcome, <span id="user-name"></span>!</h2>
         <p>Your email: <span id="user-email"></span></p>
         <button onclick="logout()">Logout</button>
     </div>
+
+    <img id="info-image" src="info-image.png" alt="Info Image">
+
+    <button id="save-info-btn" onclick="toggleInfo()">Save Info</button>
 
     <script>
         function showNotification(message) {
@@ -223,19 +254,37 @@
             document.getElementById("start-screen").style.display = "flex";
         }
 
+        function toggleInfo() {
+            const infoImage = document.getElementById("info-image");
+            const isVisible = infoImage.style.display === "block";
+            if (isVisible) {
+                infoImage.style.display = "none";
+            } else {
+                infoImage.style.display = "block";
+            }
+
+            localStorage.setItem("info_visible", !isVisible);
+        }
+
         window.onload = function() {
             const email = localStorage.getItem("logged_in_email");
+            const infoVisible = JSON.parse(localStorage.getItem("info_visible"));
             if (email && localStorage.getItem("trusted_email") === email) {
                 showWelcomePage(email);
+            }
+            if (infoVisible) {
+                document.getElementById("info-image").style.display = "block";
             }
         }
 
         setInterval(() => {
             const socialInfo = document.getElementById("social-info");
             socialInfo.style.display = socialInfo.style.display === "none" ? "block" : "none";
-        }, 5000); // Toggle visibility every 5 seconds
+        }, 5000);
+
     </script>
 </body>
 </html>
+
 
 
