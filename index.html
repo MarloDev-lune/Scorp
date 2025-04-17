@@ -16,8 +16,8 @@
         #header {
             position: absolute;
             top: 20px;
-            left: 20px;
-            font-size: 1.2em;
+            right: 20px;
+            font-size: 0.8em;
             color: #f39c12;
         }
 
@@ -106,10 +106,17 @@
             width: 200px;
             margin-bottom: 20px;
         }
+
+        #social-info {
+            font-size: 1.2em;
+            margin-top: 20px;
+            display: none;
+        }
+
     </style>
 </head>
 <body>
-    <div id="header">Social Media Site</div>
+    <div id="header">Developed By MarloDev</div>
 
     <div id="notification"></div>
 
@@ -118,6 +125,7 @@
         <div id="start-message">Welcome to Scorp Social Site</div>
         <button class="main-btn" onclick="showLoginForm()">Login</button>
         <button class="main-btn" onclick="showRegisterForm()">Create Account</button>
+        <div id="social-info">Social Media Site</div>
     </div>
 
     <div id="login-form" class="form">
@@ -221,7 +229,13 @@
                 showWelcomePage(email);
             }
         }
+
+        setInterval(() => {
+            const socialInfo = document.getElementById("social-info");
+            socialInfo.style.display = socialInfo.style.display === "none" ? "block" : "none";
+        }, 5000); // Toggle visibility every 5 seconds
     </script>
 </body>
 </html>
+
 
