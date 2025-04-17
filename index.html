@@ -8,7 +8,7 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: black;
+            background-color: #111;
             color: white;
             overflow: hidden;
         }
@@ -20,72 +20,82 @@
             align-items: center;
             height: 100vh;
             flex-direction: column;
+            text-align: center;
         }
 
         #start-message {
             font-size: 2em;
             color: white;
-            text-align: center;
-            white-space: nowrap;
-            overflow: hidden;
-            width: 100%;
-            animation: typing 2s steps(40) 1, fadeInOut 2s infinite;
+            margin-bottom: 20px;
         }
 
-        @keyframes typing {
-            0% { width: 0; }
-            100% { width: 100%; }
-        }
-
-        @keyframes fadeInOut {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        /* زر الدخول */
         #login-btn {
             padding: 10px 20px;
-            background-color: orange;
+            background-color: #f39c12;
             border: none;
             color: white;
             font-size: 1.2em;
             cursor: pointer;
-            margin-top: 20px;
+        }
+
+        /* نموذج إدخال البيانات */
+        #login-form {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #222;
+            padding: 30px;
+            border-radius: 8px;
+            width: 300px;
+            text-align: center;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 1em;
+            width: 100%;
+            margin-bottom: 20px;
+            border: 2px solid #444;
+            border-radius: 5px;
+            background-color: #333;
+            color: white;
+        }
+
+        #login-form button {
+            padding: 10px 20px;
+            background-color: #f39c12;
+            border: none;
+            color: white;
+            font-size: 1.2em;
+            cursor: pointer;
+            width: 100%;
         }
 
         /* الصفحة الرئيسية بعد الدخول */
         #home-page {
             display: none;
             text-align: center;
-        }
-
-        /* القائمة الزرقاء */
-        #blue-menu {
-            display: none;
-            background-color: blue;
-            color: white;
-            padding: 20px;
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 200px;
-        }
-
-        #blue-menu button {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            background-color: darkblue;
-            border: none;
-            color: white;
-            font-size: 1.2em;
-            cursor: pointer;
+            padding: 50px;
         }
 
         /* صورة في الوسط */
         #logo-image {
             width: 200px;
-            margin-top: 50px;
+            margin-bottom: 20px;
+        }
+
+        /* صفحة بعد التسجيل */
+        #welcome-page {
+            display: none;
+            text-align: center;
+            padding: 50px;
+        }
+
+        #user-info {
+            font-size: 1.5em;
+            margin-bottom: 20px;
         }
 
     </style>
@@ -96,55 +106,93 @@
 <div id="start-screen">
     <img src="logo.png" id="logo-image" alt="Logo">
     <div id="start-message">Welcome to Scorp Social Site</div>
-    <button id="login-btn" onclick="showLoginOptions()">Login</button>
+    <button id="login-btn" onclick="showLoginForm()">Login</button>
 </div>
 
-<!-- قائمة الخيارات بعد الضغط على زر الدخول -->
+<!-- نموذج إدخال البيانات (اسم المستخدم + كلمة المرور) -->
+<div id="login-form">
+    <h2>Login to your account</h2>
+    <input type="email" id="email-input" placeholder="Enter your email" required>
+    <input type="text" id="username-input" placeholder="Enter your username" required>
+    <input type="password" id="password-input" placeholder="Enter your password" required>
+    <button onclick="login()">Login</button>
+</div>
+
+<!-- الصفحة الرئيسية بعد الدخول -->
 <div id="home-page">
-    <div id="blue-menu">
-        <button onclick="showLoginPage()">Login</button>
-        <button onclick="showGhostLoginPage()">Ghost Login</button>
+    <h2>Welcome to Scorp Social Site</h2>
+    <p>Enjoy your time connecting with others!</p>
+</div>
+
+<!-- صفحة الترحيب بعد التسجيل -->
+<div id="welcome-page">
+    <h2>Welcome, <span id="user-name"></span>!</h2>
+    <div id="user-info">
+        <p>Your email: <span id="user-email"></span></p>
+        <p>Your username: <span id="user-username"></span></p>
     </div>
+    <button onclick="logout()">Logout</button>
 </div>
 
 <script>
-    // إظهار قائمة الخيارات بعد الضغط على زر "Login"
-    function showLoginOptions() {
+    // إظهار نموذج إدخال البيانات
+    function showLoginForm() {
         document.getElementById('start-screen').style.display = 'none';
-        document.getElementById('home-page').style.display = 'block';
-        document.getElementById('blue-menu').style.display = 'block';
+        document.getElementById('login-form').style.display = 'block';
     }
 
-    // إظهار صفحة تسجيل الدخول
-    function showLoginPage() {
-        let user = prompt("Enter your username:");
-        let pass = prompt("Enter your password:");
+    // تسجيل الدخول وحفظ البيانات
+    function login() {
+        const email = document.getElementById('email-input').value.trim();
+        const username = document.getElementById('username-input').value.trim();
+        const password = document.getElementById('password-input').value.trim();
 
-        if (user && pass) {
-            localStorage.setItem("userName", user);
-            localStorage.setItem("password", pass);
-            alert("Logged in successfully!");
+        if (email && username && password) {
+            // حفظ البيانات في localStorage باستخدام البريد الإلكتروني
+            localStorage.setItem(email + "_username", username);
+            localStorage.setItem(email + "_password", password);
+            localStorage.setItem(email + "_email", email);
+
+            // إظهار صفحة الترحيب بعد التسجيل
+            showWelcomePage(email);
+        } else {
+            alert("Please fill in all fields.");
         }
     }
 
-    // إظهار صفحة Ghost Login
-    function showGhostLoginPage() {
-        let ghostName = prompt("Enter your name (Ghost Login):");
-        if (ghostName) {
-            localStorage.setItem("userName", ghostName);
-            alert("Logged in as Ghost!");
-        }
+    // عرض صفحة الترحيب بعد التسجيل
+    function showWelcomePage(email) {
+        document.getElementById('login-form').style.display = 'none';
+        document.getElementById('welcome-page').style.display = 'block';
+
+        // عرض معلومات المستخدم
+        document.getElementById('user-name').innerText = localStorage.getItem(email + "_username");
+        document.getElementById('user-email').innerText = localStorage.getItem(email + "_email");
+        document.getElementById('user-username').innerText = localStorage.getItem(email + "_username");
     }
 
-    // عند تحميل الصفحة، تحقق إذا كان المستخدم مسجلاً الدخول
+    // تسجيل الخروج
+    function logout() {
+        // حذف البيانات من localStorage
+        localStorage.clear();
+        
+        // إعادة التوجيه إلى شاشة البداية
+        document.getElementById('welcome-page').style.display = 'none';
+        document.getElementById('start-screen').style.display = 'block';
+    }
+
+    // عند تحميل الصفحة، التحقق من إذا كان المستخدم مسجلاً الدخول
     window.onload = function() {
-        if (localStorage.getItem("userName")) {
-            alert("Welcome back, " + localStorage.getItem("userName"));
+        const email = localStorage.getItem("email");
+
+        if (email) {
+            showWelcomePage(email);
         }
     };
 </script>
 
 </body>
 </html>
+
 
 
