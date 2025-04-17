@@ -34,6 +34,8 @@
         #start-message {
             font-size: 2em;
             margin-bottom: 20px;
+            opacity: 0;
+            transition: opacity 2s;
         }
 
         .main-btn {
@@ -133,6 +135,7 @@
             color: white;
             font-size: 1em;
         }
+
     </style>
 </head>
 <body>
@@ -151,7 +154,7 @@
     <div id="login-form" class="form">
         <h2>Login</h2>
         <input type="email" id="login-email" placeholder="Email">
-        <input type="password" id="login-password" placeholder="Password">
+        <input type="password" id="login-password" placeholder="Password" onfocus="togglePasswordVisibility(true)" onblur="togglePasswordVisibility(false)">
         <button onclick="login()">Login</button>
     </div>
 
@@ -159,7 +162,7 @@
         <h2>Create Account</h2>
         <input type="email" id="register-email" placeholder="Email">
         <input type="text" id="register-username" placeholder="Username">
-        <input type="password" id="register-password" placeholder="Password">
+        <input type="password" id="register-password" placeholder="Password" onfocus="togglePasswordVisibility(true)" onblur="togglePasswordVisibility(false)">
         <button onclick="register()">Register</button>
     </div>
 
@@ -203,6 +206,13 @@
             const email = document.getElementById("register-email").value.trim();
             const username = document.getElementById("register-username").value.trim();
             const password = document.getElementById("register-password").value.trim();
+
+            // Check the number of existing accounts
+            const accountsCount = Object.keys(localStorage).filter(key => key.startsWith("account_")).length;
+            if (accountsCount >= 4) {
+                showNotification("You cannot create more than 4 accounts.");
+                return;
+            }
 
             if (localStorage.getItem("account_" + email)) {
                 showNotification("This account already exists.");
@@ -256,37 +266,34 @@
             showImage = false;
         }
 
+        function togglePasswordVisibility(show) {
+            const passwordField = document.getElementById("login-password");
+            if (show) {
+                passwordField.type = "text";
+            } else {
+                passwordField.type = "password";
+            }
+        }
+
         function showUserInfo() {
             // Toggle visibility of user info when the image is clicked
             if (showImage) {
                 document.getElementById("user-info").style.display = "none";
             } else {
                 document.getElementById("user-info").style.display = "block";
-                const accountData = JSON.parse(localStorage.getItem("account_" + localStorage.getItem("logged_in_email")));
-                document.getElementById("user-name-info-span").innerText = accountData.username;
-                document.getElementById("user-email-info").innerText = accountData.email;
             }
             showImage = !showImage;
         }
 
         window.onload = function() {
-            const email = localStorage.getItem("logged_in_email");
-            if (email && localStorage.getItem("trusted_email") === email) {
-                showWelcomePage(email);
-            }
+            setInterval(() => {
+                const startMessage = document.getElementById("start-message");
+                startMessage.style.opacity = startMessage.style.opacity === '0' ? '1' : '0';
+            }, 2000); // Toggle opacity every 2 seconds
         }
-
-        setInterval(() => {
-            const socialInfo = document.getElementById("social-info");
-            socialInfo.style.display = socialInfo.style.display === "none" ? "block" : "none";
-        }, 5000); // Toggle visibility every 5 seconds
-
-        setInterval(() => {
-            const welcomeMessage = document.getElementById("start-message");
-            welcomeMessage.style.display = welcomeMessage.style.display === "none" ? "block" : "none";
-        }, 1000); // Toggle visibility of welcome message every second
     </script>
 </body>
 </html>
+
 
 
