@@ -113,17 +113,6 @@
             display: none;
         }
 
-        #save-settings-btn {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background-color: #3498db;
-            color: white;
-            padding: 10px;
-            font-size: 1.2em;
-            cursor: pointer;
-        }
-
         #password-toggle {
             cursor: pointer;
             color: #f39c12;
@@ -165,7 +154,6 @@
         <p><span id="password-toggle" onclick="togglePassword()">Show Password</span></p>
         <p id="password-display" style="display: none;">Password: <span id="user-password"></span></p>
         <button onclick="logout()">Logout</button>
-        <button id="save-settings-btn" onclick="toggleSaveSettings()">Save Info</button>
     </div>
 
     <script>
@@ -248,18 +236,6 @@
             document.getElementById("start-screen").style.display = "flex";
         }
 
-        function toggleSaveSettings() {
-            const saveButton = document.getElementById("save-settings-btn");
-            const isSaved = saveButton.innerText === "Save Info";
-            
-            saveButton.innerText = isSaved ? "Info Saved" : "Save Info";
-            if (isSaved) {
-                localStorage.setItem("saved_info", true);
-            } else {
-                localStorage.removeItem("saved_info");
-            }
-        }
-
         function togglePassword() {
             const passwordDisplay = document.getElementById("password-display");
             passwordDisplay.style.display = passwordDisplay.style.display === "none" ? "block" : "none";
@@ -270,12 +246,8 @@
             if (email && localStorage.getItem("trusted_email") === email) {
                 showWelcomePage(email);
             }
-
-            const savedInfo = localStorage.getItem("saved_info");
-            if (savedInfo) {
-                document.getElementById("save-settings-btn").innerText = "Info Saved";
-            }
         }
     </script>
 </body>
 </html>
+
