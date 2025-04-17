@@ -87,13 +87,17 @@
     
     <div id="message-input-container">
         <input type="text" id="message-input" placeholder="Type your message...">
-        <button id="send-btn">sent</button>
+        <button id="send-btn">Send</button>
     </div>
 
     <!-- Firebase Configuration -->
     <script src="https://www.gstatic.com/firebasejs/9.18.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.18.0/firebase-firestore.js"></script>
-    <script>
+    <script type="module">
+        // استيراد Firebase من النسخة الحديثة
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, orderBy, query, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-firestore.js";
+
         // Firebase config object
         const firebaseConfig = {
             apiKey: "AIzaSyBb1EHZlBZ6Fuzz8oJEzu92dQRQp82ukuE",
@@ -105,18 +109,19 @@
             measurementId: "G-81B2Z87JFJ"
         };
 
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+        // تهيئة Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
 
         const chatContainer = document.getElementById('chat-container');
         const messageInput = document.getElementById('message-input');
         const sendBtn = document.getElementById('send-btn');
 
-        // Load messages from Firestore
+        // تحميل الرسائل من Firestore
         async function loadMessages() {
             chatContainer.innerHTML = ''; // Clear the chat container
-            const snapshot = await db.collection('messages').orderBy('timestamp').get();
+            const messagesQuery = query(collection(db, "messages"), orderBy('timestamp'));
+            const snapshot = await getDocs(messagesQuery);
             snapshot.forEach(doc => {
                 const message = doc.data();
                 const messageElement = document.createElement('div');
@@ -129,36 +134,35 @@
             });
         }
 
-        // Send message to Firestore
+        // إرسال رسالة إلى Firestore
         async function sendMessage() {
             const messageText = messageInput.value.trim();
             if (messageText === '') return;
 
-            // Create a new message object
             const newMessage = {
                 text: messageText,
-                type: 'user', // This message is from the current user
-                username: 'You', // Display username as 'You'
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                type: 'user', // رسالة من المستخدم الحالي
+                username: 'You', // عرض الاسم على أنه "أنت"
+                timestamp: new Date()
             };
 
-            // Add message to Firestore
-            await db.collection('messages').add(newMessage);
+            // إضافة الرسالة إلى Firestore
+            await addDoc(collection(db, "messages"), newMessage);
 
-            // Clear the input field
+            // مسح حقل الإدخال
             messageInput.value = '';
 
-            // Reload the messages
+            // إعادة تحميل الرسائل
             loadMessages();
         }
 
-        // Delete message from Firestore
+        // حذف رسالة من Firestore
         async function deleteMessage(id) {
-            await db.collection('messages').doc(id).delete();
-            loadMessages(); // Reload the messages after deletion
+            await deleteDoc(doc(db, "messages", id));
+            loadMessages(); // إعادة تحميل الرسائل بعد الحذف
         }
 
-        // Event listener for the send button or Enter key
+        // ربط الحدث بزر الإرسال أو عند الضغط على Enter
         sendBtn.addEventListener('click', sendMessage);
         messageInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
@@ -166,10 +170,9 @@
             }
         });
 
-        // Load messages when the page loads
+        // تحميل الرسائل عند تحميل الصفحة
         window.onload = loadMessages;
     </script>
 
 </body>
 </html>
-
