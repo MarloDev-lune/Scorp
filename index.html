@@ -136,6 +136,13 @@
             font-size: 1em;
         }
 
+        .password-toggle {
+            cursor: pointer;
+            color: #f39c12;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+
     </style>
 </head>
 <body>
@@ -154,7 +161,7 @@
     <div id="login-form" class="form">
         <h2>Login</h2>
         <input type="email" id="login-email" placeholder="Email">
-        <input type="password" id="login-password" placeholder="Password" onfocus="togglePasswordVisibility(true)" onblur="togglePasswordVisibility(false)">
+        <input type="password" id="login-password" placeholder="Password">
         <button onclick="login()">Login</button>
     </div>
 
@@ -162,24 +169,27 @@
         <h2>Create Account</h2>
         <input type="email" id="register-email" placeholder="Email">
         <input type="text" id="register-username" placeholder="Username">
-        <input type="password" id="register-password" placeholder="Password" onfocus="togglePasswordVisibility(true)" onblur="togglePasswordVisibility(false)">
+        <input type="password" id="register-password" placeholder="Password">
         <button onclick="register()">Register</button>
     </div>
 
     <div id="welcome-page">
         <h2>Welcome, <span id="user-name"></span>!</h2>
         <p>Your email: <span id="user-email"></span></p>
+        <p>Your password: <span id="user-password"></span></p>
         <button onclick="logout()">Logout</button>
     </div>
 
-    <img src="logo.png" id="user-image" onclick="showUserInfo()">
+    <img src="user.png" id="user-image" onclick="showUserInfo()">
     <div id="user-info">
-        <p id="user-name-info">Name: <span id="user-name-info-span"></span></p>
+        <p>Name: <span id="user-name-info"></span></p>
         <p>Email: <span id="user-email-info"></span></p>
+        <p>Password: <span id="user-password-info"></span> <span class="password-toggle" onclick="togglePasswordVisibility()">Show/Hide Password</span></p>
     </div>
 
     <script>
         let showImage = false;
+        let isPasswordVisible = false;
 
         function showNotification(message) {
             const notif = document.getElementById("notification");
@@ -207,7 +217,6 @@
             const username = document.getElementById("register-username").value.trim();
             const password = document.getElementById("register-password").value.trim();
 
-            // Check the number of existing accounts
             const accountsCount = Object.keys(localStorage).filter(key => key.startsWith("account_")).length;
             if (accountsCount >= 4) {
                 showNotification("You cannot create more than 4 accounts.");
@@ -253,8 +262,7 @@
             document.getElementById("welcome-page").style.display = "block";
             document.getElementById("user-name").innerText = accountData.username;
             document.getElementById("user-email").innerText = accountData.email;
-
-            // Show the save information button if logged in
+            document.getElementById("user-password").innerText = "********"; // Initially hidden password
             document.getElementById("user-image").style.display = "block";
         }
 
@@ -262,26 +270,30 @@
             localStorage.removeItem("logged_in_email");
             document.getElementById("welcome-page").style.display = "none";
             document.getElementById("start-screen").style.display = "flex";
-            document.getElementById("user-image").style.display = "none"; // Hide user image
+            document.getElementById("user-image").style.display = "none";
             showImage = false;
         }
 
-        function togglePasswordVisibility(show) {
-            const passwordField = document.getElementById("login-password");
-            if (show) {
-                passwordField.type = "text";
+        function togglePasswordVisibility() {
+            const passwordField = document.getElementById("user-password");
+            const currentPassword = localStorage.getItem("account_" + localStorage.getItem("logged_in_email")).password;
+            if (isPasswordVisible) {
+                passwordField.innerText = "********";
             } else {
-                passwordField.type = "password";
+                passwordField.innerText = currentPassword;
             }
+            isPasswordVisible = !isPasswordVisible;
         }
 
         function showUserInfo() {
-            // Toggle visibility of user info when the image is clicked
-            if (showImage) {
-                document.getElementById("user-info").style.display = "none";
-            } else {
-                document.getElementById("user-info").style.display = "block";
+            const email = localStorage.getItem("logged_in_email");
+            const accountData = JSON.parse(localStorage.getItem("account_" + email));
+            if (accountData) {
+                document.getElementById("user-name-info").innerText = accountData.username;
+                document.getElementById("user-email-info").innerText = accountData.email;
+                document.getElementById("user-password-info").innerText = "********"; // Initially hidden password
             }
+            document.getElementById("user-info").style.display = showImage ? "none" : "block";
             showImage = !showImage;
         }
 
@@ -289,11 +301,8 @@
             setInterval(() => {
                 const startMessage = document.getElementById("start-message");
                 startMessage.style.opacity = startMessage.style.opacity === '0' ? '1' : '0';
-            }, 2000); // Toggle opacity every 2 seconds
+            }, 2000);
         }
     </script>
 </body>
 </html>
-
-
-
