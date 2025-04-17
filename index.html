@@ -147,20 +147,24 @@
     document.getElementById("register-form").style.display = "block";
   }
 
-  function register() {
-    const email = document.getElementById("email-register").value.trim();
-    const username = document.getElementById("username-register").value.trim();
-    const password = document.getElementById("password-register").value.trim();
+function register() {
+  const email = document.getElementById("email-register").value.trim();
+  const username = document.getElementById("username-register").value.trim();
+  const password = document.getElementById("password-register").value.trim();
 
-    if (email && username && password) {
-      localStorage.setItem("account_" + email, JSON.stringify({ email, username, password }));
-      localStorage.setItem("logged_in_email", email);
-      showWelcomePage(email);
-    } else {
-      alert("Please fill in all fields.");
+  if (email && username && password) {
+    if (localStorage.getItem("account_" + email)) {
+      alert("هذا الحساب موجود بالفعل.");
+      return;
     }
-  }
 
+    localStorage.setItem("account_" + email, JSON.stringify({ email, username, password }));
+    localStorage.setItem("logged_in_email", email);
+    showWelcomePage(email);
+  } else {
+    alert("يرجى تعبئة جميع الحقول.");
+  }
+}
   function login() {
     const email = document.getElementById("email-login").value.trim();
     const password = document.getElementById("password-login").value.trim();
