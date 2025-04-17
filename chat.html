@@ -87,7 +87,7 @@
     
     <div id="message-input-container">
         <input type="text" id="message-input" placeholder="Type your message...">
-        <button id="send-btn">Send</button>
+        <button id="send-btn">Sent</button>
     </div>
 
     <!-- Firebase Configuration -->
@@ -96,7 +96,7 @@
     <script type="module">
         // استيراد Firebase من النسخة الحديثة
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, orderBy, query, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, orderBy, query, deleteDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-firestore.js";
 
         // Firebase config object
         const firebaseConfig = {
@@ -118,19 +118,20 @@
         const sendBtn = document.getElementById('send-btn');
 
         // تحميل الرسائل من Firestore
-        async function loadMessages() {
+        function loadMessages() {
             chatContainer.innerHTML = ''; // Clear the chat container
             const messagesQuery = query(collection(db, "messages"), orderBy('timestamp'));
-            const snapshot = await getDocs(messagesQuery);
-            snapshot.forEach(doc => {
-                const message = doc.data();
-                const messageElement = document.createElement('div');
-                messageElement.classList.add('message', message.type);
-                messageElement.innerHTML = `
-                    <strong>${message.username}</strong>: ${message.text}
-                    ${message.type === 'user' ? `<span class="delete-btn" onclick="deleteMessage('${doc.id}')">Delete</span>` : ''}
-                `;
-                chatContainer.appendChild(messageElement);
+            onSnapshot(messagesQuery, (snapshot) => {
+                snapshot.forEach(doc => {
+                    const message = doc.data();
+                    const messageElement = document.createElement('div');
+                    messageElement.classList.add('message', message.type);
+                    messageElement.innerHTML = `
+                        <strong>${message.username}</strong>: ${message.text}
+                        ${message.type === 'user' ? `<span class="delete-btn" onclick="deleteMessage('${doc.id}')">Delete</span>` : ''}
+                    `;
+                    chatContainer.appendChild(messageElement);
+                });
             });
         }
 
@@ -151,15 +152,11 @@
 
             // مسح حقل الإدخال
             messageInput.value = '';
-
-            // إعادة تحميل الرسائل
-            loadMessages();
         }
 
         // حذف رسالة من Firestore
         async function deleteMessage(id) {
             await deleteDoc(doc(db, "messages", id));
-            loadMessages(); // إعادة تحميل الرسائل بعد الحذف
         }
 
         // ربط الحدث بزر الإرسال أو عند الضغط على Enter
