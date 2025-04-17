@@ -155,28 +155,6 @@
             display: none;
             z-index: 1000;
         }
-
-        /* Notification styles */
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: #f44336; /* Red for errors */
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 1em;
-            display: none;
-            z-index: 9999;
-        }
-
-        .notification.success {
-            background-color: #4CAF50; /* Green for success */
-        }
-
-        .notification.show {
-            display: block;
-        }
     </style>
 </head>
 <body>
@@ -211,10 +189,10 @@
     </div>
     <div id="options">
         <button onclick="location.href='chat.html'">Chat</button>
-        <button onclick="soonAlert()">Songs</button>
-        <button onclick="soonAlert()">MTA Discord</button>
-        <button onclick="soonAlert()">MTA Server</button>
-        <button onclick="soonAlert()">Discord</button>
+        <button onclick="notify('Coming Soon')">Songs</button>
+        <button onclick="notify('Coming Soon')">MTA Discord</button>
+        <button onclick="notify('Coming Soon')">MTA Server</button>
+        <button onclick="notify('Coming Soon')">Discord</button>
     </div>
     <div id="details-section">
         <h3>Your Info</h3>
@@ -239,9 +217,6 @@
     <button onclick="closeChangePopup()">Cancel</button>
 </div>
 
-<!-- Notification Container -->
-<div id="notification-container"></div>
-
 <script>
     function showLoginForm() {
         document.getElementById("start-screen").style.display = "none";
@@ -258,27 +233,30 @@
         pw.type = pw.type === "password" ? "text" : "password";
     }
 
+    function notify(msg) {
+        if (Notification.permission === "granted") {
+            new Notification(msg);
+        } else if (Notification.permission !== "denied") {
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") new Notification(msg);
+            });
+        }
+    }
+
     function register() {
         const email = document.getElementById("register-email").value.trim();
         const username = document.getElementById("register-username").value.trim();
         const password = document.getElementById("register-password").value.trim();
 
-        if (!email || !username || !password) {
-            showNotification("Please fill in all fields.", false); // Show error notification
-            return;
-        }
+        if (!email || !username || !password) return notify("Fill in all fields");
 
         const existing = localStorage.getItem("account_" + email);
-        if (existing) {
-            showNotification("Account already exists.", false); // Show error notification
-            return;
-        }
+        if (existing) return notify("Account already exists");
 
         const accountData = { email, username, password };
         localStorage.setItem("account_" + email, JSON.stringify(accountData));
         localStorage.setItem("trusted_email", email);
         localStorage.setItem("logged_in_email", email);
-        showNotification("Registration successful!", true); // Show success notification
         showWelcomePage(email);
     }
 
@@ -286,40 +264,15 @@
         const email = document.getElementById("login-email").value.trim();
         const password = document.getElementById("login-password").value.trim();
         const trusted = localStorage.getItem("trusted_email");
-        if (email !== trusted) {
-            showNotification("This device is not trusted for this email.", false); // Show error notification
-            return;
-        }
+        if (email !== trusted) return notify("This device is not trusted for this email");
 
         const account = JSON.parse(localStorage.getItem("account_" + email));
         if (account && account.password === password) {
             localStorage.setItem("logged_in_email", email);
             showWelcomePage(email);
         } else {
-            showNotification("Incorrect email or password", false); // Show error notification
+            notify("Incorrect email or password");
         }
-    }
-
-    function showNotification(message, isSuccess) {
-        const notification = document.createElement("div");
-        notification.classList.add("notification");
-
-        if (isSuccess) {
-            notification.classList.add("success");
-        }
-
-        notification.innerText = message;
-
-        document.body.appendChild(notification);
-
-        setTimeout(() => {
-            notification.classList.add("show");
-        }, 100);
-
-        setTimeout(() => {
-            notification.classList.remove("show");
-            document.body.removeChild(notification);
-        }, 3000);
     }
 
     function logout() {
@@ -333,8 +286,48 @@
 
         document.getElementById("user-name").innerText = account.username;
         document.getElementById("user-email").innerText = account.email;
-       
+        document.getElementById("user-password").dataset.password = account.password;
+        document.getElementById("user-password").innerText = "••••••••";
+        document.getElementById("username-display").innerText = account.username;
 
+        document.querySelectorAll(".form, #start-screen").forEach(el => el.style.display = "none");
+        document.getElementById("welcome-page").style.display = "block";
+    }
 
+    function togglePassword() {
+        const pwEl = document.getElementById("user-password");
+        pwEl.innerText = pwEl.innerText === "••••••••" ? pwEl.dataset.password : "••••••••";
+    }
 
+    function openChangePopup() {
+        document.getElementById("change-popup").style.display = "block";
+    }
 
+    function closeChangePopup() {
+        document.getElementById("change-popup").style.display = "none";
+    }
+
+    function applyChanges() {
+        const newUsername = document.getElementById("new-username").value.trim();
+        const newPassword = document.getElementById("new-password").value.trim();
+        const email = localStorage.getItem("logged_in_email");
+        const account = JSON.parse(localStorage.getItem("account_" + email));
+
+        if (newUsername) account.username = newUsername;
+        if (newPassword) account.password = newPassword;
+
+        localStorage.setItem("account_" + email, JSON.stringify(account));
+        localStorage.setItem("trusted_email", email);
+        showWelcomePage(email);
+        closeChangePopup();
+    }
+
+    window.onload = function() {
+        const email = localStorage.getItem("logged_in_email");
+        if (email && localStorage.getItem("trusted_email") === email) {
+            showWelcomePage(email);
+        }
+    }
+</script>
+</body>
+</html>
