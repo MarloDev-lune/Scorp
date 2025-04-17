@@ -43,7 +43,7 @@
         }
 
         /* زر الدخول */
-        #enter-btn {
+        #login-btn {
             padding: 10px 20px;
             background-color: orange;
             border: none;
@@ -56,15 +56,6 @@
         /* الصفحة الرئيسية بعد الدخول */
         #home-page {
             display: none;
-            text-align: center;
-        }
-
-        #footer-message {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 1.2em;
             text-align: center;
         }
 
@@ -91,27 +82,6 @@
             cursor: pointer;
         }
 
-        /* الصفحة الثانية بعد الدخول */
-        #second-page {
-            display: none;
-            text-align: center;
-        }
-
-        #visitor-count {
-            position: absolute;
-            right: 10px;
-            bottom: 10px;
-        }
-
-        #logout-btn {
-            padding: 10px 20px;
-            background-color: red;
-            border: none;
-            color: white;
-            font-size: 1.2em;
-            cursor: pointer;
-        }
-
         /* صورة في الوسط */
         #logo-image {
             width: 200px;
@@ -126,38 +96,23 @@
 <div id="start-screen">
     <img src="logo.png" id="logo-image" alt="Logo">
     <div id="start-message">Welcome to Scorp Social Site</div>
-    <button id="enter-btn" onclick="showHomePage()">Enter</button>
+    <button id="login-btn" onclick="showLoginOptions()">Login</button>
 </div>
 
-<!-- الصفحة الرئيسية بعد الدخول -->
+<!-- قائمة الخيارات بعد الضغط على زر الدخول -->
 <div id="home-page">
-    <img src="logo.png" id="logo-image-small" alt="Logo">
-    <div id="footer-message">Welcome to our website. Here you can communicate with your friends in a good and smooth way. We welcome you.</div>
     <div id="blue-menu">
         <button onclick="showLoginPage()">Login</button>
         <button onclick="showGhostLoginPage()">Ghost Login</button>
-        <button onclick="logout()">Exit</button>
-    </div>
-</div>
-
-<!-- الصفحة الثانية بعد التسجيل -->
-<div id="second-page">
-    <img src="logo.png" id="logo-image" alt="Logo">
-    <div id="visitor-count">Visitors: <span id="visitor-counter">0</span></div>
-    <div id="logout-btn-container">
-        <button id="logout-btn" onclick="logout()">Log Out</button>
     </div>
 </div>
 
 <script>
-    let userName = '';
-    let password = '';
-    let visitorsCount = 0;
-
-    // عرض الصفحة الرئيسية بعد 3 ثوانٍ
-    function showHomePage() {
+    // إظهار قائمة الخيارات بعد الضغط على زر "Login"
+    function showLoginOptions() {
         document.getElementById('start-screen').style.display = 'none';
         document.getElementById('home-page').style.display = 'block';
+        document.getElementById('blue-menu').style.display = 'block';
     }
 
     // إظهار صفحة تسجيل الدخول
@@ -169,8 +124,6 @@
             localStorage.setItem("userName", user);
             localStorage.setItem("password", pass);
             alert("Logged in successfully!");
-            visitorsCount++;
-            showSecondPage();
         }
     }
 
@@ -180,30 +133,13 @@
         if (ghostName) {
             localStorage.setItem("userName", ghostName);
             alert("Logged in as Ghost!");
-            visitorsCount++;
-            showSecondPage();
         }
-    }
-
-    // إظهار الصفحة الثانية
-    function showSecondPage() {
-        document.getElementById('home-page').style.display = 'none';
-        document.getElementById('second-page').style.display = 'block';
-        document.getElementById('visitor-counter').innerText = visitorsCount;
-    }
-
-    // زر الخروج
-    function logout() {
-        localStorage.removeItem("userName");
-        localStorage.removeItem("password");
-        document.getElementById('second-page').style.display = 'none';
-        document.getElementById('start-screen').style.display = 'block';
     }
 
     // عند تحميل الصفحة، تحقق إذا كان المستخدم مسجلاً الدخول
     window.onload = function() {
         if (localStorage.getItem("userName")) {
-            showSecondPage();
+            alert("Welcome back, " + localStorage.getItem("userName"));
         }
     };
 </script>
