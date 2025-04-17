@@ -8,7 +8,7 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #111;
+            background-color: #2980b9; /* Blue color for background */
             color: white;
             overflow: hidden;
         }
@@ -16,9 +16,17 @@
         #header {
             position: absolute;
             top: 20px;
-            right: 20px;
+            left: 20px;
             font-size: 0.8em;
             color: #f39c12;
+        }
+
+        #logo-image {
+            width: 50px;
+            margin-top: 10px;
+            position: absolute;
+            top: 10px;
+            left: 20px;
         }
 
         #start-screen {
@@ -86,6 +94,49 @@
             padding: 50px;
         }
 
+        #blue-menu {
+            background-color: #2980b9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        #blue-menu button {
+            background-color: #1abc9c;
+            margin-bottom: 15px;
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2em;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        #blue-menu button:hover {
+            background-color: #16a085;
+        }
+
+        #footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background-color: #333;
+            padding: 20px;
+            color: #ccc;
+            text-align: center;
+            font-size: 1em;
+        }
+
+        #footer p {
+            margin: 0;
+        }
+
+        #logout-btn {
+            background-color: #e74c3c;
+            color: white;
+            margin-top: 20px;
+        }
+
         #notification {
             position: fixed;
             left: 20px;
@@ -102,51 +153,16 @@
             transition: opacity 0.4s ease-in-out;
         }
 
-        #logo-image {
-            width: 200px;
-            margin-bottom: 20px;
-        }
-
-        #social-info {
-            font-size: 1.2em;
-            margin-top: 20px;
-            display: none;
-        }
-
-        #blue-menu {
-            position: absolute;
-            left: 10px;
-            bottom: 50px;
-            background-color: #2980b9;
-            padding: 20px;
-            border-radius: 8px;
-            width: 200px;
-            text-align: left;
-            display: none; /* Start hidden */
-        }
-
-        #blue-menu button {
-            background-color: #1abc9c;
-            margin-bottom: 10px;
-            width: 100%;
-        }
-
-        #logout-btn {
-            margin-top: 20px;
-            background-color: #e74c3c;
-        }
-
         #show-password {
             cursor: pointer;
-            margin-top: 10px;
-            color: #f39c12;
             font-size: 1em;
+            color: #f39c12;
+            text-decoration: underline;
         }
+
     </style>
 </head>
 <body>
-    <div id="header">Developed By MarloDev</div>
-
     <div id="notification"></div>
 
     <div id="start-screen">
@@ -160,7 +176,6 @@
         <h2>Login</h2>
         <input type="email" id="login-email" placeholder="Email">
         <input type="password" id="login-password" placeholder="Password">
-        <span id="show-password" onclick="togglePassword('login-password')">Show Password</span>
         <button onclick="login()">Login</button>
     </div>
 
@@ -169,22 +184,28 @@
         <input type="email" id="register-email" placeholder="Email">
         <input type="text" id="register-username" placeholder="Username">
         <input type="password" id="register-password" placeholder="Password">
-        <span id="show-password-register" onclick="togglePassword('register-password')">Show Password</span>
         <button onclick="register()">Register</button>
     </div>
 
     <div id="welcome-page">
-        <h2>Welcome, <span id="user-name"></span>!</h2>
-        <p>Your email: <span id="user-email"></span></p>
-        <button onclick="logout()">Logout</button>
+        <div id="user-info">
+            <h2 id="user-name">Username</h2>
+            <p id="user-email">useremail@example.com</p>
+        </div>
+
+        <div id="blue-menu">
+            <button onclick="openChat()">Chat</button>
+            <button onclick="showComingSoon()">Songs</button>
+            <button onclick="showComingSoon()">MTA Discord</button>
+            <button onclick="showComingSoon()">MTA Server</button>
+            <button onclick="showComingSoon()">Discord</button>
+        </div>
+
+        <button id="logout-btn" onclick="logout()">Logout</button>
     </div>
 
-    <div id="blue-menu">
-        <button onclick="openChat()">Chat</button>
-        <button onclick="showComingSoon()">Songs</button>
-        <button onclick="showComingSoon()">VIP Server</button>
-        <button onclick="showComingSoon()">Discord VIP Server</button>
-        <button id="logout-btn" onclick="logout()">Logout</button>
+    <div id="footer">
+        <p>Our website is safe, user-friendly, and offers seamless communication. Enjoy your time on Scorp Social Site!</p>
     </div>
 
     <script>
@@ -197,15 +218,6 @@
                 notif.style.opacity = 0;
                 setTimeout(() => notif.style.display = "none", 500);
             }, 3000);
-        }
-
-        function togglePassword(passwordFieldId) {
-            const passwordField = document.getElementById(passwordFieldId);
-            if (passwordField.type === "password") {
-                passwordField.type = "text";
-            } else {
-                passwordField.type = "password";
-            }
         }
 
         function showLoginForm() {
@@ -271,7 +283,6 @@
             localStorage.removeItem("logged_in_email");
             document.getElementById("welcome-page").style.display = "none";
             document.getElementById("start-screen").style.display = "flex";
-            document.getElementById("blue-menu").style.display = "none";
         }
 
         function openChat() {
@@ -291,3 +302,4 @@
     </script>
 </body>
 </html>
+
