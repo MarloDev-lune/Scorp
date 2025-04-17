@@ -113,29 +113,20 @@
             display: none;
         }
 
-        .password-container {
-            display: flex;
-            align-items: center;
-        }
-
-        .password-input {
-            width: 100%;
-            padding: 10px;
-            font-size: 1em;
-            margin-bottom: 20px;
-            border: 2px solid #444;
-            border-radius: 5px;
-            background-color: #333;
+        #save-settings-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #3498db;
             color: white;
+            padding: 10px;
+            font-size: 1.2em;
+            cursor: pointer;
         }
 
-        .toggle-password {
-            background-color: transparent;
-            border: none;
-            color: #f39c12;
-            font-size: 1em;
+        #password-toggle {
             cursor: pointer;
-            margin-left: 10px;
+            color: #f39c12;
         }
 
     </style>
@@ -156,10 +147,7 @@
     <div id="login-form" class="form">
         <h2>Login</h2>
         <input type="email" id="login-email" placeholder="Email">
-        <div class="password-container">
-            <input type="password" id="login-password" class="password-input" placeholder="Password">
-            <button type="button" class="toggle-password" onclick="togglePassword('login')">Show</button>
-        </div>
+        <input type="password" id="login-password" placeholder="Password">
         <button onclick="login()">Login</button>
     </div>
 
@@ -167,62 +155,20 @@
         <h2>Create Account</h2>
         <input type="email" id="register-email" placeholder="Email">
         <input type="text" id="register-username" placeholder="Username">
-        <div class="password-container">
-            <input type="password" id="register-password" class="password-input" placeholder="Password">
-            <button type="button" class="toggle-password" onclick="togglePassword('register')">Show</button>
-        </div>
+        <input type="password" id="register-password" placeholder="Password">
         <button onclick="register()">Register</button>
     </div>
 
     <div id="welcome-page">
         <h2>Welcome, <span id="user-name"></span>!</h2>
         <p>Your email: <span id="user-email"></span></p>
-        <button onclick="showAccountInfo()">Account Info</button>
+        <p><span id="password-toggle" onclick="togglePassword()">Show Password</span></p>
+        <p id="password-display" style="display: none;">Password: <span id="user-password"></span></p>
         <button onclick="logout()">Logout</button>
-    </div>
-
-    <div id="account-info" class="form" style="display: none;">
-        <h3>Your Account Information</h3>
-        <p>Username: <span id="account-username"></span></p>
-        <p>Email: <span id="account-email"></span></p>
-        <p>Password: <span id="account-password"></span></p>
-        <button onclick="toggleAccountInfo()">Close</button>
+        <button id="save-settings-btn" onclick="toggleSaveSettings()">Save Info</button>
     </div>
 
     <script>
-        let showImage = false;
-        let isPasswordVisible = false;
-
-        function saveCurrentPage() {
-            // حفظ الصفحة الحالية في localStorage
-            localStorage.setItem('currentPage', window.location.pathname);
-        }
-
-        function loadSavedPage() {
-            // تحميل الصفحة المحفوظة عند العودة
-            const savedPage = localStorage.getItem('currentPage');
-            if (savedPage) {
-                window.location.pathname = savedPage;
-            } else {
-                window.location.pathname = '/';
-            }
-        }
-
-        // عند الخروج من الموقع، حفظ الصفحة
-        window.onbeforeunload = function() {
-            saveCurrentPage();
-        }
-
-        window.onload = function() {
-            // تحميل الصفحة المحفوظة عند الدخول
-            loadSavedPage();
-            
-            setInterval(() => {
-                const startMessage = document.getElementById("start-message");
-                startMessage.style.opacity = startMessage.style.opacity === '0' ? '1' : '0';
-            }, 2000);
-        }
-
         function showNotification(message) {
             const notif = document.getElementById("notification");
             notif.innerText = message;
@@ -251,6 +197,11 @@
 
             if (localStorage.getItem("account_" + email)) {
                 showNotification("This account already exists.");
+                return;
+            }
+
+            if (localStorage.length >= 4) {
+                showNotification("You can only create up to 4 accounts.");
                 return;
             }
 
@@ -288,6 +239,7 @@
             document.getElementById("welcome-page").style.display = "block";
             document.getElementById("user-name").innerText = accountData.username;
             document.getElementById("user-email").innerText = accountData.email;
+            document.getElementById("user-password").innerText = accountData.password;
         }
 
         function logout() {
@@ -296,36 +248,34 @@
             document.getElementById("start-screen").style.display = "flex";
         }
 
-        function togglePassword(formType) {
-            const passwordField = document.getElementById(formType + "-password");
-            const toggleButton = document.querySelector(`#${formType}-form .toggle-password`);
+        function toggleSaveSettings() {
+            const saveButton = document.getElementById("save-settings-btn");
+            const isSaved = saveButton.innerText === "Save Info";
             
-            if (isPasswordVisible) {
-                passwordField.type = "password";
-                toggleButton.innerText = "Show";
+            saveButton.innerText = isSaved ? "Info Saved" : "Save Info";
+            if (isSaved) {
+                localStorage.setItem("saved_info", true);
             } else {
-                passwordField.type = "text";
-                toggleButton.innerText = "Hide";
+                localStorage.removeItem("saved_info");
             }
-
-            isPasswordVisible = !isPasswordVisible;
         }
 
-        function showAccountInfo() {
+        function togglePassword() {
+            const passwordDisplay = document.getElementById("password-display");
+            passwordDisplay.style.display = passwordDisplay.style.display === "none" ? "block" : "none";
+        }
+
+        window.onload = function() {
             const email = localStorage.getItem("logged_in_email");
-            const accountData = JSON.parse(localStorage.getItem("account_" + email));
-            if (accountData) {
-                document.getElementById("account-username").innerText = accountData.username;
-                document.getElementById("account-email").innerText = accountData.email;
-                document.getElementById("account-password").innerText = accountData.password;
+            if (email && localStorage.getItem("trusted_email") === email) {
+                showWelcomePage(email);
             }
-            document.getElementById("account-info").style.display = "block";
-        }
 
-        function toggleAccountInfo() {
-            document.getElementById("account-info").style.display = "none";
+            const savedInfo = localStorage.getItem("saved_info");
+            if (savedInfo) {
+                document.getElementById("save-settings-btn").innerText = "Info Saved";
+            }
         }
     </script>
 </body>
 </html>
-
