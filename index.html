@@ -1,213 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Scorp Social Site</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #111;
-      color: white;
-      overflow: hidden;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scorp Social Site</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #111;
+            color: white;
+            overflow: hidden;
+        }
 
-    #start-screen {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      flex-direction: column;
-      text-align: center;
-    }
+        #header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1.2em;
+            color: #f39c12;
+        }
 
-    #start-message {
-      font-size: 2em;
-      color: white;
-      margin-bottom: 10px;
-      animation: fadeIn 2s ease-in-out;
-    }
+        #start-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            text-align: center;
+            transition: opacity 0.5s;
+        }
 
-    #description {
-      font-size: 1em;
-      color: #ccc;
-      margin-bottom: 20px;
-      animation: fadeIn 2s ease-in-out;
-    }
+        #start-message {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
 
-    #login-btn, #register-btn {
-      padding: 10px 20px;
-      background-color: #f39c12;
-      border: none;
-      color: white;
-      font-size: 1.2em;
-      cursor: pointer;
-      margin-bottom: 10px;
-    }
+        .main-btn {
+            padding: 10px 20px;
+            background-color: #f39c12;
+            border: none;
+            color: white;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin: 5px;
+        }
 
-    #login-form, #register-form {
-      display: none;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: #222;
-      padding: 30px;
-      border-radius: 8px;
-      width: 300px;
-      text-align: center;
-    }
+        .form {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #222;
+            padding: 30px;
+            border-radius: 8px;
+            width: 300px;
+            text-align: center;
+        }
 
-    input {
-      padding: 10px;
-      font-size: 1em;
-      width: 100%;
-      margin-bottom: 20px;
-      border: 2px solid #444;
-      border-radius: 5px;
-      background-color: #333;
-      color: white;
-    }
+        input {
+            padding: 10px;
+            font-size: 1em;
+            width: 100%;
+            margin-bottom: 20px;
+            border: 2px solid #444;
+            border-radius: 5px;
+            background-color: #333;
+            color: white;
+        }
 
-    button {
-      padding: 10px 20px;
-      background-color: #f39c12;
-      border: none;
-      color: white;
-      font-size: 1.2em;
-      cursor: pointer;
-      width: 100%;
-    }
+        button {
+            padding: 10px 20px;
+            background-color: #f39c12;
+            border: none;
+            color: white;
+            font-size: 1.2em;
+            cursor: pointer;
+            width: 100%;
+        }
 
-    #home-page, #welcome-page {
-      display: none;
-      text-align: center;
-      padding: 50px;
-    }
-
-    #logo-image {
-      width: 200px;
-      margin-bottom: 20px;
-    }
-
-    #user-info {
-      font-size: 1.5em;
-      margin-bottom: 20px;
-    }
-
-    @keyframes fadeIn {
-      0% { opacity: 0; transform: translateY(-10px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-  </style>
+        #welcome-page {
+            display: none;
+            text-align: center;
+            padding: 50px;
+        }
+    </style>
 </head>
 <body>
+    <div id="header">موقع للتواصل الاجتماعي</div>
 
-<div id="start-screen">
-  <img src="logo.png" id="logo-image" alt="Logo" />
-  <div id="start-message">Welcome to Scorp Social Site</div>
-  <div id="description">A social network to connect with people.</div>
-  <button id="login-btn" onclick="showLoginForm()">Login</button>
-  <button id="register-btn" onclick="showRegisterForm()">Create Account</button>
-</div>
+    <div id="start-screen">
+        <div id="start-message">Welcome to Scorp Social Site</div>
+        <button class="main-btn" onclick="showLoginForm()">تسجيل الدخول</button>
+        <button class="main-btn" onclick="showRegisterForm()">إنشاء حساب</button>
+    </div>
 
-<div id="login-form">
-  <h2>Login</h2>
-  <input type="email" id="email-login" placeholder="Enter your email" required />
-  <input type="password" id="password-login" placeholder="Enter your password" required />
-  <button onclick="login()">Login</button>
-</div>
+    <div id="login-form" class="form">
+        <h2>تسجيل الدخول</h2>
+        <input type="email" id="login-email" placeholder="البريد الإلكتروني">
+        <input type="password" id="login-password" placeholder="كلمة السر">
+        <button onclick="login()">دخول</button>
+    </div>
 
-<div id="register-form">
-  <h2>Create Account</h2>
-  <input type="email" id="email-register" placeholder="Enter your email" required />
-  <input type="text" id="username-register" placeholder="Choose a username" required />
-  <input type="password" id="password-register" placeholder="Choose a password" required />
-  <button onclick="register()">Register</button>
-</div>
+    <div id="register-form" class="form">
+        <h2>إنشاء حساب</h2>
+        <input type="email" id="register-email" placeholder="البريد الإلكتروني">
+        <input type="text" id="register-username" placeholder="اسم المستخدم">
+        <input type="password" id="register-password" placeholder="كلمة السر">
+        <button onclick="register()">تسجيل</button>
+    </div>
 
-<div id="welcome-page">
-  <h2>Welcome, <span id="user-name"></span>!</h2>
-  <div id="user-info">
-    <p>Your email: <span id="user-email"></span></p>
-    <p>Your username: <span id="user-username"></span></p>
-  </div>
-  <button onclick="logout()">Logout</button>
-</div>
+    <div id="welcome-page">
+        <h2>مرحبًا بك يا <span id="user-name"></span>!</h2>
+        <p>بريدك الإلكتروني: <span id="user-email"></span></p>
+        <button onclick="logout()">تسجيل الخروج</button>
+    </div>
 
-<script>
-  function showLoginForm() {
-    document.getElementById("start-screen").style.display = "none";
-    document.getElementById("login-form").style.display = "block";
-  }
+    <script>
+        function showLoginForm() {
+            document.getElementById("start-screen").style.display = "none";
+            document.getElementById("login-form").style.display = "block";
+        }
 
-  function showRegisterForm() {
-    document.getElementById("start-screen").style.display = "none";
-    document.getElementById("register-form").style.display = "block";
-  }
+        function showRegisterForm() {
+            document.getElementById("start-screen").style.display = "none";
+            document.getElementById("register-form").style.display = "block";
+        }
 
-function register() {
-  const email = document.getElementById("email-register").value.trim();
-  const username = document.getElementById("username-register").value.trim();
-  const password = document.getElementById("password-register").value.trim();
+        function register() {
+            const email = document.getElementById("register-email").value.trim();
+            const username = document.getElementById("register-username").value.trim();
+            const password = document.getElementById("register-password").value.trim();
 
-  if (email && username && password) {
-    if (localStorage.getItem("account_" + email)) {
-      alert("هذا الحساب موجود بالفعل.");
-      return;
-    }
+            if (localStorage.getItem("account_" + email)) {
+                alert("هذا الحساب موجود بالفعل.");
+                return;
+            }
 
-    localStorage.setItem("account_" + email, JSON.stringify({ email, username, password }));
-    localStorage.setItem("logged_in_email", email);
-    showWelcomePage(email);
-  } else {
-    alert("يرجى تعبئة جميع الحقول.");
-  }
-}
-  function login() {
-    const email = document.getElementById("email-login").value.trim();
-    const password = document.getElementById("password-login").value.trim();
-    const account = JSON.parse(localStorage.getItem("account_" + email));
+            const accountData = { email, username, password };
+            localStorage.setItem("account_" + email, JSON.stringify(accountData));
+            localStorage.setItem("trusted_email", email);
+            localStorage.setItem("logged_in_email", email);
+            showWelcomePage(email);
+        }
 
-    if (account && account.password === password) {
-      localStorage.setItem("logged_in_email", email);
-      showWelcomePage(email);
-    }
-    // إذا المعلومات خاطئة، لا يحدث شيء
-  }
+        function login() {
+            const email = document.getElementById("login-email").value.trim();
+            const password = document.getElementById("login-password").value.trim();
+            const trustedEmail = localStorage.getItem("trusted_email");
 
-  function showWelcomePage(email) {
-    document.getElementById("login-form").style.display = "none";
-    document.getElementById("register-form").style.display = "none";
-    document.getElementById("start-screen").style.display = "none";
-    document.getElementById("welcome-page").style.display = "block";
+            if (email !== trustedEmail) {
+                alert("لا يمكنك استخدام هذا البريد الإلكتروني على هذا الجهاز.");
+                return;
+            }
 
-    const account = JSON.parse(localStorage.getItem("account_" + email));
-    document.getElementById("user-name").innerText = account.username;
-    document.getElementById("user-email").innerText = account.email;
-    document.getElementById("user-username").innerText = account.username;
-  }
+            const accountData = JSON.parse(localStorage.getItem("account_" + email));
+            if (accountData && accountData.password === password) {
+                localStorage.setItem("logged_in_email", email);
+                showWelcomePage(email);
+            } else {
+                alert("المعلومات غير صحيحة.");
+            }
+        }
 
-  function logout() {
-    localStorage.removeItem("logged_in_email");
-    document.getElementById("welcome-page").style.display = "none";
-    document.getElementById("start-screen").style.display = "flex";
-  }
+        function showWelcomePage(email) {
+            const accountData = JSON.parse(localStorage.getItem("account_" + email));
+            if (!accountData) return;
 
-  window.onload = function () {
-    const email = localStorage.getItem("logged_in_email");
-    if (email && localStorage.getItem("account_" + email)) {
-      showWelcomePage(email);
-    } else {
-      document.getElementById("start-screen").style.display = "flex";
-    }
-  };
-</script>
+            document.querySelectorAll(".form, #start-screen").forEach(e => e.style.display = "none");
+            document.getElementById("welcome-page").style.display = "block";
+            document.getElementById("user-name").innerText = accountData.username;
+            document.getElementById("user-email").innerText = accountData.email;
+        }
 
+        function logout() {
+            localStorage.removeItem("logged_in_email");
+            document.getElementById("welcome-page").style.display = "none";
+            document.getElementById("start-screen").style.display = "flex";
+        }
+
+        window.onload = function() {
+            const email = localStorage.getItem("logged_in_email");
+            if (email && localStorage.getItem("trusted_email") === email) {
+                showWelcomePage(email);
+            }
+        }
+    </script>
 </body>
 </html>
-
 
 
 
