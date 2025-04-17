@@ -90,29 +90,72 @@
         <button id="send-btn">Send</button>
     </div>
 
+    <!-- Firebase Configuration -->
+    <script src="https://www.gstatic.com/firebasejs/9.18.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.18.0/firebase-firestore.js"></script>
     <script>
+        // Firebase config object
+        const firebaseConfig = {
+            apiKey: "AIzaSyBb1EHZlBZ6Fuzz8oJEzu92dQRQp82ukuE",
+            authDomain: "scorpchat-c2c53.firebaseapp.com",
+            projectId: "scorpchat-c2c53",
+            storageBucket: "scorpchat-c2c53.appspot.com",
+            messagingSenderId: "1057027114582",
+            appId: "1:1057027114582:web:9f0b00b920c920a2055df7",
+            measurementId: "G-81B2Z87JFJ"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
         const chatContainer = document.getElementById('chat-container');
         const messageInput = document.getElementById('message-input');
         const sendBtn = document.getElementById('send-btn');
 
-        // Load messages from local storage
-        function loadMessages() {
-            const messages = JSON.parse(localStorage.getItem('chatMessages')) || [];
-            chatContainer.innerHTML = '';
-            messages.forEach((message, index) => {
+        // Load messages from Firestore
+        async function loadMessages() {
+            chatContainer.innerHTML = ''; // Clear the chat container
+            const snapshot = await db.collection('messages').orderBy('timestamp').get();
+            snapshot.forEach(doc => {
+                const message = doc.data();
                 const messageElement = document.createElement('div');
                 messageElement.classList.add('message', message.type);
                 messageElement.innerHTML = `
                     <strong>${message.username}</strong>: ${message.text}
-                    ${message.type === 'user' ? `<span class="delete-btn" onclick="deleteMessage(${index})">Delete</span>` : ''}
+                    ${message.type === 'user' ? `<span class="delete-btn" onclick="deleteMessage('${doc.id}')">Delete</span>` : ''}
                 `;
                 chatContainer.appendChild(messageElement);
             });
         }
 
-        // Save messages to local storage
-        function saveMessages(messages) {
-            localStorage.setItem('chatMessages', JSON.stringify(messages));
+        // Send message to Firestore
+        async function sendMessage() {
+            const messageText = messageInput.value.trim();
+            if (messageText === '') return;
+
+            // Create a new message object
+            const newMessage = {
+                text: messageText,
+                type: 'user', // This message is from the current user
+                username: 'You', // Display username as 'You'
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            // Add message to Firestore
+            await db.collection('messages').add(newMessage);
+
+            // Clear the input field
+            messageInput.value = '';
+
+            // Reload the messages
+            loadMessages();
+        }
+
+        // Delete message from Firestore
+        async function deleteMessage(id) {
+            await db.collection('messages').doc(id).delete();
+            loadMessages(); // Reload the messages after deletion
         }
 
         // Event listener for the send button or Enter key
@@ -123,55 +166,10 @@
             }
         });
 
-        // Function to send a new message
-        function sendMessage() {
-            const messageText = messageInput.value.trim();
-            if (messageText === '') return;
-
-            // Create a new message object
-            const newMessage = {
-                text: messageText,
-                type: 'user', // This message is from the current user
-                username: 'You' // Display username as 'You'
-            };
-
-            // Get existing messages
-            const messages = JSON.parse(localStorage.getItem('chatMessages')) || [];
-            messages.push(newMessage);
-
-            // Save the updated messages
-            saveMessages(messages);
-
-            // Clear the input field
-            messageInput.value = '';
-
-            // Load the updated messages
-            loadMessages();
-
-            // Simulate a response from another user after a short delay
-            setTimeout(() => {
-                const responseMessage = {
-                    text: `Reply to: ${messageText}`,
-                    type: 'other', // This message is from another user
-                    username: 'Other User'
-                };
-                messages.push(responseMessage);
-                saveMessages(messages);
-                loadMessages();
-            }, 1000); // Simulate a 1-second delay for response
-        }
-
-        // Function to delete a message
-        function deleteMessage(index) {
-            const messages = JSON.parse(localStorage.getItem('chatMessages')) || [];
-            messages.splice(index, 1); // Remove the message at the specified index
-            saveMessages(messages);
-            loadMessages(); // Reload the messages after deletion
-        }
-
         // Load messages when the page loads
         window.onload = loadMessages;
     </script>
 
 </body>
 </html>
+
