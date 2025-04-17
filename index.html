@@ -8,35 +8,17 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #2980b9; /* Blue color for background */
+            background-color: #111;
             color: white;
-            overflow: hidden;
-        }
-
-        #header {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 0.8em;
-            color: #f39c12;
-        }
-
-        #logo-image {
-            width: 50px;
-            margin-top: 10px;
-            position: absolute;
-            top: 10px;
-            left: 20px;
         }
 
         #start-screen {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             flex-direction: column;
-            text-align: center;
-            transition: opacity 0.5s;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #222;
         }
 
         #start-message {
@@ -71,7 +53,7 @@
             padding: 10px;
             font-size: 1em;
             width: 100%;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             border: 2px solid #444;
             border-radius: 5px;
             background-color: #333;
@@ -79,94 +61,89 @@
         }
 
         button {
-            padding: 10px 20px;
+            padding: 10px;
             background-color: #f39c12;
             border: none;
             color: white;
-            font-size: 1.2em;
+            font-size: 1em;
             cursor: pointer;
             width: 100%;
+            border-radius: 5px;
+        }
+
+        #toggleRegisterPassword, #toggleLoginPassword, #toggleWelcomePassword {
+            color: #f39c12;
+            cursor: pointer;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            display: block;
         }
 
         #welcome-page {
             display: none;
-            text-align: center;
-            padding: 50px;
+            background-color: #2980b9;
+            height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        #user-info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        #logo-image {
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            width: 50px;
         }
 
         #blue-menu {
-            background-color: #2980b9;
+            position: absolute;
+            top: 150px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            background-color: #3498db;
             padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 30px;
+            border-radius: 10px;
         }
 
         #blue-menu button {
-            background-color: #1abc9c;
-            margin-bottom: 15px;
+            display: block;
+            margin: 10px 0;
             width: 100%;
             padding: 10px;
-            font-size: 1.2em;
+            background-color: #1abc9c;
             border: none;
-            cursor: pointer;
             border-radius: 5px;
+            color: white;
+            font-size: 1em;
         }
 
-        #blue-menu button:hover {
-            background-color: #16a085;
+        #logout-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #e74c3c;
         }
 
         #footer {
             position: absolute;
             bottom: 0;
             width: 100%;
-            background-color: #333;
-            padding: 20px;
-            color: #ccc;
             text-align: center;
-            font-size: 1em;
+            background-color: #222;
+            color: #ccc;
+            padding: 10px;
         }
-
-        #footer p {
-            margin: 0;
-        }
-
-        #logout-btn {
-            background-color: #e74c3c;
-            color: white;
-            margin-top: 20px;
-        }
-
-        #notification {
-            position: fixed;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: #3498db;
-            color: white;
-            padding: 15px 25px;
-            border-radius: 8px;
-            font-size: 1em;
-            display: none;
-            box-shadow: 0 0 10px rgba(0,0,0,0.3);
-            z-index: 9999;
-            transition: opacity 0.4s ease-in-out;
-        }
-
-        #show-password {
-            cursor: pointer;
-            font-size: 1em;
-            color: #f39c12;
-            text-decoration: underline;
-        }
-
     </style>
 </head>
 <body>
-    <div id="notification"></div>
-
     <div id="start-screen">
-        <img src="logo.png" id="logo-image" alt="Logo">
         <div id="start-message">Welcome to Scorp Social Site</div>
         <button class="main-btn" onclick="showLoginForm()">Login</button>
         <button class="main-btn" onclick="showRegisterForm()">Create Account</button>
@@ -176,6 +153,7 @@
         <h2>Login</h2>
         <input type="email" id="login-email" placeholder="Email">
         <input type="password" id="login-password" placeholder="Password">
+        <span id="toggleLoginPassword" onclick="togglePassword('login-password')">Show Password</span>
         <button onclick="login()">Login</button>
     </div>
 
@@ -184,40 +162,38 @@
         <input type="email" id="register-email" placeholder="Email">
         <input type="text" id="register-username" placeholder="Username">
         <input type="password" id="register-password" placeholder="Password">
+        <span id="toggleRegisterPassword" onclick="togglePassword('register-password')">Show Password</span>
         <button onclick="register()">Register</button>
     </div>
 
     <div id="welcome-page">
+        <img src="logo.png" id="logo-image" alt="Logo">
         <div id="user-info">
-            <h2 id="user-name">Username</h2>
-            <p id="user-email">useremail@example.com</p>
+            <h2 id="user-name"></h2>
+            <p id="user-email"></p>
+            <p id="user-password"></p>
         </div>
-
         <div id="blue-menu">
             <button onclick="openChat()">Chat</button>
-            <button onclick="showComingSoon()">Songs</button>
-            <button onclick="showComingSoon()">MTA Discord</button>
-            <button onclick="showComingSoon()">MTA Server</button>
-            <button onclick="showComingSoon()">Discord</button>
+            <button onclick="comingSoon()">Songs</button>
+            <button onclick="comingSoon()">Mta Discord</button>
+            <button onclick="comingSoon()">Mta Server</button>
+            <button onclick="comingSoon()">Discord</button>
         </div>
-
         <button id="logout-btn" onclick="logout()">Logout</button>
-    </div>
-
-    <div id="footer">
-        <p>Our website is safe, user-friendly, and offers seamless communication. Enjoy your time on Scorp Social Site!</p>
+        <div id="footer">
+            Our website is safe, user-friendly, and offers seamless communication. Enjoy your time on Scorp Social Site!
+        </div>
     </div>
 
     <script>
-        function showNotification(message) {
-            const notif = document.getElementById("notification");
-            notif.innerText = message;
-            notif.style.display = "block";
-            notif.style.opacity = 1;
-            setTimeout(() => {
-                notif.style.opacity = 0;
-                setTimeout(() => notif.style.display = "none", 500);
-            }, 3000);
+        function togglePassword(id) {
+            const input = document.getElementById(id);
+            if (input.type === 'password') {
+                input.type = 'text';
+            } else {
+                input.type = 'password';
+            }
         }
 
         function showLoginForm() {
@@ -235,71 +211,66 @@
             const username = document.getElementById("register-username").value.trim();
             const password = document.getElementById("register-password").value.trim();
 
-            if (localStorage.getItem("account_" + email)) {
-                showNotification("This account already exists.");
+            let accounts = JSON.parse(localStorage.getItem("accounts") || "[]");
+            if (accounts.length >= 4) {
+                alert("You can only create up to 4 accounts.");
                 return;
             }
 
-            const accountData = { email, username, password };
-            localStorage.setItem("account_" + email, JSON.stringify(accountData));
-            localStorage.setItem("trusted_email", email);
+            const newUser = { email, username, password };
+            accounts.push(newUser);
+            localStorage.setItem("accounts", JSON.stringify(accounts));
             localStorage.setItem("logged_in_email", email);
-            showWelcomePage(email);
+            showWelcomePage(newUser);
         }
 
         function login() {
             const email = document.getElementById("login-email").value.trim();
             const password = document.getElementById("login-password").value.trim();
-            const trustedEmail = localStorage.getItem("trusted_email");
+            let accounts = JSON.parse(localStorage.getItem("accounts") || "[]");
 
-            if (email !== trustedEmail) {
-                showNotification("You cannot use this email on this device.");
-                return;
-            }
-
-            const accountData = JSON.parse(localStorage.getItem("account_" + email));
-            if (accountData && accountData.password === password) {
+            const user = accounts.find(acc => acc.email === email && acc.password === password);
+            if (user) {
                 localStorage.setItem("logged_in_email", email);
-                showWelcomePage(email);
+                showWelcomePage(user);
             } else {
-                showNotification("Incorrect information.");
+                alert("Invalid credentials.");
             }
         }
 
-        function showWelcomePage(email) {
-            const accountData = JSON.parse(localStorage.getItem("account_" + email));
-            if (!accountData) return;
-
+        function showWelcomePage(user) {
             document.querySelectorAll(".form, #start-screen").forEach(e => e.style.display = "none");
             document.getElementById("welcome-page").style.display = "block";
-            document.getElementById("user-name").innerText = accountData.username;
-            document.getElementById("user-email").innerText = accountData.email;
-
-            // Show the blue menu after login
-            document.getElementById("blue-menu").style.display = "block";
+            document.getElementById("user-name").innerText = user.username;
+            document.getElementById("user-email").innerText = user.email;
+            document.getElementById("user-password").innerText = `Password: ${user.password}`;
         }
 
         function logout() {
             localStorage.removeItem("logged_in_email");
-            document.getElementById("welcome-page").style.display = "none";
-            document.getElementById("start-screen").style.display = "flex";
+            location.reload();
         }
 
         function openChat() {
-            window.location.href = "chat.html"; // Redirects to the chat page
+            location.href = "chat.html";
         }
 
-        function showComingSoon() {
-            showNotification("Coming Soon");
+        function comingSoon() {
+            alert("Coming soon!");
         }
 
-        window.onload = function() {
+        window.onload = () => {
             const email = localStorage.getItem("logged_in_email");
-            if (email && localStorage.getItem("trusted_email") === email) {
-                showWelcomePage(email);
+            if (email) {
+                let accounts = JSON.parse(localStorage.getItem("accounts") || "[]");
+                const user = accounts.find(acc => acc.email === email);
+                if (user) {
+                    showWelcomePage(user);
+                }
             }
         }
     </script>
 </body>
 </html>
+
 
