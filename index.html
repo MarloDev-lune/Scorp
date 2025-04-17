@@ -101,38 +101,44 @@
             z-index: 9999;
             transition: opacity 0.4s ease-in-out;
         }
+
+        #logo-image {
+            width: 200px;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
-    <div id="header">موقع للتواصل الاجتماعي</div>
+    <div id="header">Social Media Site</div>
 
     <div id="notification"></div>
 
     <div id="start-screen">
+        <img src="logo.png" id="logo-image" alt="Logo">
         <div id="start-message">Welcome to Scorp Social Site</div>
-        <button class="main-btn" onclick="showLoginForm()">تسجيل الدخول</button>
-        <button class="main-btn" onclick="showRegisterForm()">إنشاء حساب</button>
+        <button class="main-btn" onclick="showLoginForm()">Login</button>
+        <button class="main-btn" onclick="showRegisterForm()">Create Account</button>
     </div>
 
     <div id="login-form" class="form">
-        <h2>تسجيل الدخول</h2>
-        <input type="email" id="login-email" placeholder="البريد الإلكتروني">
-        <input type="password" id="login-password" placeholder="كلمة السر">
-        <button onclick="login()">دخول</button>
+        <h2>Login</h2>
+        <input type="email" id="login-email" placeholder="Email">
+        <input type="password" id="login-password" placeholder="Password">
+        <button onclick="login()">Login</button>
     </div>
 
     <div id="register-form" class="form">
-        <h2>إنشاء حساب</h2>
-        <input type="email" id="register-email" placeholder="البريد الإلكتروني">
-        <input type="text" id="register-username" placeholder="اسم المستخدم">
-        <input type="password" id="register-password" placeholder="كلمة السر">
-        <button onclick="register()">تسجيل</button>
+        <h2>Create Account</h2>
+        <input type="email" id="register-email" placeholder="Email">
+        <input type="text" id="register-username" placeholder="Username">
+        <input type="password" id="register-password" placeholder="Password">
+        <button onclick="register()">Register</button>
     </div>
 
     <div id="welcome-page">
-        <h2>مرحبًا بك يا <span id="user-name"></span>!</h2>
-        <p>بريدك الإلكتروني: <span id="user-email"></span></p>
-        <button onclick="logout()">تسجيل الخروج</button>
+        <h2>Welcome, <span id="user-name"></span>!</h2>
+        <p>Your email: <span id="user-email"></span></p>
+        <button onclick="logout()">Logout</button>
     </div>
 
     <script>
@@ -163,7 +169,7 @@
             const password = document.getElementById("register-password").value.trim();
 
             if (localStorage.getItem("account_" + email)) {
-                showNotification("هذا الحساب موجود بالفعل.");
+                showNotification("This account already exists.");
                 return;
             }
 
@@ -180,7 +186,7 @@
             const trustedEmail = localStorage.getItem("trusted_email");
 
             if (email !== trustedEmail) {
-                showNotification("لا يمكنك استخدام هذا البريد الإلكتروني على هذا الجهاز.");
+                showNotification("You cannot use this email on this device.");
                 return;
             }
 
@@ -189,7 +195,7 @@
                 localStorage.setItem("logged_in_email", email);
                 showWelcomePage(email);
             } else {
-                showNotification("المعلومات غير صحيحة.");
+                showNotification("Incorrect information.");
             }
         }
 
@@ -218,3 +224,4 @@
     </script>
 </body>
 </html>
+
