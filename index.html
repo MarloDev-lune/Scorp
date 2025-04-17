@@ -113,9 +113,26 @@
             display: none;
         }
 
-        #password-toggle {
-            cursor: pointer;
-            color: #f39c12;
+        #blue-menu {
+            position: absolute;
+            left: 10px;
+            bottom: 50px;
+            background-color: #2980b9;
+            padding: 20px;
+            border-radius: 8px;
+            width: 200px;
+            text-align: left;
+        }
+
+        #blue-menu button {
+            background-color: #1abc9c;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        #logout-btn {
+            margin-top: 20px;
+            background-color: #e74c3c;
         }
 
     </style>
@@ -130,7 +147,6 @@
         <div id="start-message">Welcome to Scorp Social Site</div>
         <button class="main-btn" onclick="showLoginForm()">Login</button>
         <button class="main-btn" onclick="showRegisterForm()">Create Account</button>
-        <div id="social-info">Social Media Site</div>
     </div>
 
     <div id="login-form" class="form">
@@ -151,9 +167,15 @@
     <div id="welcome-page">
         <h2>Welcome, <span id="user-name"></span>!</h2>
         <p>Your email: <span id="user-email"></span></p>
-        <p><span id="password-toggle" onclick="togglePassword()">Show Password</span></p>
-        <p id="password-display" style="display: none;">Password: <span id="user-password"></span></p>
         <button onclick="logout()">Logout</button>
+    </div>
+
+    <div id="blue-menu">
+        <button onclick="openChat()">Chat</button>
+        <button onclick="showComingSoon()">Songs</button>
+        <button onclick="showComingSoon()">VIP Server</button>
+        <button onclick="showComingSoon()">Discord VIP Server</button>
+        <button id="logout-btn" onclick="logout()">Logout</button>
     </div>
 
     <script>
@@ -185,11 +207,6 @@
 
             if (localStorage.getItem("account_" + email)) {
                 showNotification("This account already exists.");
-                return;
-            }
-
-            if (localStorage.length >= 4) {
-                showNotification("You can only create up to 4 accounts.");
                 return;
             }
 
@@ -227,18 +244,23 @@
             document.getElementById("welcome-page").style.display = "block";
             document.getElementById("user-name").innerText = accountData.username;
             document.getElementById("user-email").innerText = accountData.email;
-            document.getElementById("user-password").innerText = accountData.password;
+
+            document.getElementById("blue-menu").style.display = "block";
         }
 
         function logout() {
             localStorage.removeItem("logged_in_email");
             document.getElementById("welcome-page").style.display = "none";
             document.getElementById("start-screen").style.display = "flex";
+            document.getElementById("blue-menu").style.display = "none";
         }
 
-        function togglePassword() {
-            const passwordDisplay = document.getElementById("password-display");
-            passwordDisplay.style.display = passwordDisplay.style.display === "none" ? "block" : "none";
+        function openChat() {
+            window.location.href = "chat.html"; // Redirects to the chat page
+        }
+
+        function showComingSoon() {
+            showNotification("Coming Soon");
         }
 
         window.onload = function() {
@@ -250,4 +272,3 @@
     </script>
 </body>
 </html>
-
