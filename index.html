@@ -20,22 +20,6 @@
             color: #f39c12;
         }
 
-        #notification {
-            position: fixed;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: #3498db;
-            color: white;
-            padding: 15px 25px;
-            border-radius: 8px;
-            font-size: 1em;
-            display: none;
-            box-shadow: 0 0 10px rgba(0,0,0,0.3);
-            z-index: 9999;
-            transition: opacity 0.4s ease-in-out;
-        }
-
         #start-screen {
             display: flex;
             justify-content: center;
@@ -45,11 +29,6 @@
             text-align: center;
         }
 
-        #logo-image {
-            width: 200px;
-            margin-bottom: 20px;
-        }
-
         #start-message {
             font-size: 2em;
             margin-bottom: 20px;
@@ -57,8 +36,9 @@
         }
 
         @keyframes blink {
-            0%, 100% { opacity: 1; }
+            0% { opacity: 1; }
             50% { opacity: 0; }
+            100% { opacity: 1; }
         }
 
         .main-btn {
@@ -95,13 +75,6 @@
             color: white;
         }
 
-        .toggle-password {
-            margin-bottom: 20px;
-            cursor: pointer;
-            font-size: 0.9em;
-            color: #f39c12;
-        }
-
         button {
             padding: 10px 20px;
             background-color: #f39c12;
@@ -114,121 +87,119 @@
 
         #welcome-page {
             display: none;
-            background-color: #0b3d91;
-            color: white;
             min-height: 100vh;
+            background-color: #005678;
             padding: 20px;
             position: relative;
         }
 
-        #welcome-page h2 {
-            margin-top: 0;
+        #top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #003f5e;
+            color: white;
+            font-size: 1.2em;
         }
 
-        .user-info {
-            position: absolute;
-            top: 20px;
-            left: 20px;
+        #sidebar {
+            position: fixed;
+            left: 0;
+            top: 60px;
+            background-color: #003f5e;
+            padding: 20px;
+            width: 200px;
+            color: white;
         }
 
-        .logo-small {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            width: 50px;
+        #content {
+            margin-left: 220px;
+            padding: 20px;
         }
 
-        .menu {
-            position: absolute;
+        #footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #002c40;
+            padding: 10px;
+            text-align: center;
+            color: white;
+        }
+
+        .popup {
+            position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: #174ea6;
+            background-color: #222;
             padding: 20px;
             border-radius: 10px;
-        }
-
-        .menu button {
-            display: block;
-            margin: 10px auto;
-            background-color: white;
-            color: #174ea6;
-            width: 200px;
-        }
-
-        .footer {
-            position: absolute;
-            bottom: 10px;
-            width: 100%;
-            text-align: center;
-            color: #ddd;
-            font-size: 0.9em;
+            display: none;
+            z-index: 1000;
         }
     </style>
 </head>
 <body>
-    <div id="header">Developed by MarloDev</div>
-    <div id="notification"></div>
-
     <div id="start-screen">
-        <img src="logo.png" id="logo-image" alt="Logo">
+        <img src="logo.png" style="width: 150px; margin-bottom: 20px;">
         <div id="start-message">Welcome to Scorp Social Site</div>
         <button class="main-btn" onclick="showLoginForm()">Login</button>
-        <button class="main-btn" onclick="showRegisterForm()">Create Account</button>
+        <button class="main-btn" onclick="showRegisterForm()">Register</button>
     </div>
 
     <div id="login-form" class="form">
         <h2>Login</h2>
         <input type="email" id="login-email" placeholder="Email">
         <input type="password" id="login-password" placeholder="Password">
-        <div class="toggle-password" onclick="togglePassword('login-password')">Show/Hide Password</div>
         <button onclick="login()">Login</button>
     </div>
 
     <div id="register-form" class="form">
-        <h2>Create Account</h2>
+        <h2>Register</h2>
         <input type="email" id="register-email" placeholder="Email">
         <input type="text" id="register-username" placeholder="Username">
         <input type="password" id="register-password" placeholder="Password">
-        <div class="toggle-password" onclick="togglePassword('register-password')">Show/Hide Password</div>
         <button onclick="register()">Register</button>
     </div>
 
     <div id="welcome-page">
-        <img src="logo.png" class="logo-small" alt="logo">
-        <div class="user-info">
-            <div id="user-name"></div>
-            <div id="user-email"></div>
+        <div id="top-bar">
+            <div>Scorp</div>
+            <div id="account-info"></div>
         </div>
-        <div class="menu">
-            <button onclick="openChat()">Chat</button>
-            <button onclick="showComingSoon()">Songs</button>
-            <button onclick="showComingSoon()">Mta Discord</button>
-            <button onclick="showComingSoon()">Mta Server</button>
-            <button onclick="showComingSoon()">Discord</button>
+        <div id="sidebar">
+            <div><strong>Username:</strong> <span id="user-name"></span></div>
+            <div><strong>Email:</strong> <span id="user-email"></span></div>
+            <div><strong>Password:</strong> <span id="user-password" onclick="togglePassword()">••••••••</span></div>
+            <br>
+            <button onclick="openChangePopup()">Change Name/Password</button><br><br>
+            <button onclick="logout()">Logout</button>
         </div>
-        <div class="footer">
-            This site is secure and smooth to use. We care about your privacy and comfort.
+        <div id="content">
+            <ul>
+                <li><a href="chat.html">Chat</a></li>
+                <li><a href="#" onclick="soonAlert()">Songs</a></li>
+                <li><a href="#" onclick="soonAlert()">MTA Discord</a></li>
+                <li><a href="#" onclick="soonAlert()">MTA Server</a></li>
+                <li><a href="#" onclick="soonAlert()">Discord</a></li>
+            </ul>
+        </div>
+        <div id="footer">
+            This site is safe and smooth. You can enjoy your experience freely without worries.
         </div>
     </div>
 
+    <div class="popup" id="change-popup">
+        <h3>Change Info</h3>
+        <input type="text" id="new-username" placeholder="New Username">
+        <input type="password" id="new-password" placeholder="New Password">
+        <button onclick="applyChanges()">Apply</button>
+        <button onclick="closeChangePopup()">Cancel</button>
+    </div>
+
     <script>
-        function showNotification(msg) {
-            const notif = document.getElementById("notification");
-            notif.innerText = msg;
-            notif.style.display = "block";
-            notif.style.opacity = 1;
-            setTimeout(() => {
-                notif.style.opacity = 0;
-                setTimeout(() => notif.style.display = "none", 400);
-            }, 3000);
-        }
-
-        function togglePassword(id) {
-            const input = document.getElementById(id);
-            input.type = input.type === "password" ? "text" : "password";
-        }
-
         function showLoginForm() {
             document.getElementById("start-screen").style.display = "none";
             document.getElementById("login-form").style.display = "block";
@@ -240,63 +211,96 @@
         }
 
         function register() {
-            const email = document.getElementById("register-email").value;
-            const username = document.getElementById("register-username").value;
-            const password = document.getElementById("register-password").value;
+            const email = document.getElementById("register-email").value.trim();
+            const username = document.getElementById("register-username").value.trim();
+            const password = document.getElementById("register-password").value.trim();
 
-            if (!email || !username || !password) return showNotification("Please fill all fields");
+            if (!email || !username || !password) return alert("Fill in all fields");
 
-            let count = 0;
-            for (let i = 0; i < localStorage.length; i++) {
-                if (localStorage.key(i).startsWith("account_")) count++;
-            }
-            if (count >= 4) return showNotification("You can't create more than 4 accounts");
+            const accountCount = Object.keys(localStorage).filter(k => k.startsWith("account_")).length;
+            if (accountCount >= 4) return alert("Max 4 accounts allowed");
 
-            if (localStorage.getItem("account_" + email)) return showNotification("Account already exists");
+            const existing = localStorage.getItem("account_" + email);
+            if (existing) return alert("Account already exists");
 
-            const acc = { email, username, password };
-            localStorage.setItem("account_" + email, JSON.stringify(acc));
+            const accountData = { email, username, password };
+            localStorage.setItem("account_" + email, JSON.stringify(accountData));
             localStorage.setItem("trusted_email", email);
             localStorage.setItem("logged_in_email", email);
             showWelcomePage(email);
         }
 
         function login() {
-            const email = document.getElementById("login-email").value;
-            const password = document.getElementById("login-password").value;
+            const email = document.getElementById("login-email").value.trim();
+            const password = document.getElementById("login-password").value.trim();
             const trusted = localStorage.getItem("trusted_email");
+            if (email !== trusted) return alert("This device is not trusted for this email");
 
-            if (email !== trusted) return showNotification("You cannot use this email on this device");
-
-            const acc = JSON.parse(localStorage.getItem("account_" + email));
-            if (acc && acc.password === password) {
+            const account = JSON.parse(localStorage.getItem("account_" + email));
+            if (account && account.password === password) {
                 localStorage.setItem("logged_in_email", email);
                 showWelcomePage(email);
             } else {
-                showNotification("Incorrect credentials");
+                alert("Incorrect email or password");
             }
         }
 
+        function logout() {
+            localStorage.removeItem("logged_in_email");
+            location.reload();
+        }
+
         function showWelcomePage(email) {
-            const acc = JSON.parse(localStorage.getItem("account_" + email));
-            document.getElementById("user-name").innerText = acc.username;
-            document.getElementById("user-email").innerText = acc.email;
-            document.querySelectorAll(".form, #start-screen").forEach(e => e.style.display = "none");
+            const account = JSON.parse(localStorage.getItem("account_" + email));
+            if (!account) return;
+
+            document.getElementById("user-name").innerText = account.username;
+            document.getElementById("user-email").innerText = account.email;
+            document.getElementById("user-password").dataset.password = account.password;
+            document.getElementById("account-info").innerText = account.username;
+
+            document.querySelectorAll(".form, #start-screen").forEach(el => el.style.display = "none");
             document.getElementById("welcome-page").style.display = "block";
         }
 
-        function openChat() {
-            window.location.href = "chat.html";
+        function togglePassword() {
+            const pwEl = document.getElementById("user-password");
+            if (pwEl.innerText === "••••••••") {
+                pwEl.innerText = pwEl.dataset.password;
+            } else {
+                pwEl.innerText = "••••••••";
+            }
         }
 
-        function showComingSoon() {
-            showNotification("Coming soon!");
+        function openChangePopup() {
+            document.getElementById("change-popup").style.display = "block";
         }
 
-        window.onload = () => {
+        function closeChangePopup() {
+            document.getElementById("change-popup").style.display = "none";
+        }
+
+        function applyChanges() {
+            const newUsername = document.getElementById("new-username").value.trim();
+            const newPassword = document.getElementById("new-password").value.trim();
             const email = localStorage.getItem("logged_in_email");
-            const trusted = localStorage.getItem("trusted_email");
-            if (email && email === trusted) {
+            const account = JSON.parse(localStorage.getItem("account_" + email));
+
+            if (newUsername) account.username = newUsername;
+            if (newPassword) account.password = newPassword;
+
+            localStorage.setItem("account_" + email, JSON.stringify(account));
+            showWelcomePage(email);
+            closeChangePopup();
+        }
+
+        function soonAlert() {
+            alert("Coming Soon");
+        }
+
+        window.onload = function() {
+            const email = localStorage.getItem("logged_in_email");
+            if (email && localStorage.getItem("trusted_email") === email) {
                 showWelcomePage(email);
             }
         }
