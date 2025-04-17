@@ -113,32 +113,25 @@
             display: none;
         }
 
-        #save-info-btn {
+        #user-image {
+            width: 50px;
             position: absolute;
-            top: 20px;
-            left: 20px;
-            background-color: #f39c12;
-            padding: 10px;
-            font-size: 1em;
-            cursor: pointer;
-        }
-
-        #info-image {
-            position: fixed;
             bottom: 20px;
             left: 20px;
-            width: 100px;
+            cursor: pointer;
             display: none;
         }
 
-        #welcome-message {
-            animation: fadeInOut 2s infinite;
-        }
-
-        @keyframes fadeInOut {
-            0% { opacity: 1; }
-            50% { opacity: 0; }
-            100% { opacity: 1; }
+        #user-info {
+            display: none;
+            position: absolute;
+            bottom: 80px;
+            left: 20px;
+            background-color: #222;
+            padding: 10px;
+            border-radius: 5px;
+            color: white;
+            font-size: 1em;
         }
     </style>
 </head>
@@ -171,16 +164,20 @@
     </div>
 
     <div id="welcome-page">
-        <h2 id="welcome-message">Welcome, <span id="user-name"></span>!</h2>
+        <h2>Welcome, <span id="user-name"></span>!</h2>
         <p>Your email: <span id="user-email"></span></p>
         <button onclick="logout()">Logout</button>
     </div>
 
-    <img id="info-image" src="info-image.png" alt="Info Image">
-
-    <button id="save-info-btn" onclick="toggleInfo()">Save Info</button>
+    <img src="logo.png" id="user-image" onclick="showUserInfo()">
+    <div id="user-info">
+        <p id="user-name-info">Name: <span id="user-name-info-span"></span></p>
+        <p>Email: <span id="user-email-info"></span></p>
+    </div>
 
     <script>
+        let showImage = false;
+
         function showNotification(message) {
             const notif = document.getElementById("notification");
             notif.innerText = message;
@@ -246,45 +243,50 @@
             document.getElementById("welcome-page").style.display = "block";
             document.getElementById("user-name").innerText = accountData.username;
             document.getElementById("user-email").innerText = accountData.email;
+
+            // Show the save information button if logged in
+            document.getElementById("user-image").style.display = "block";
         }
 
         function logout() {
             localStorage.removeItem("logged_in_email");
             document.getElementById("welcome-page").style.display = "none";
             document.getElementById("start-screen").style.display = "flex";
+            document.getElementById("user-image").style.display = "none"; // Hide user image
+            showImage = false;
         }
 
-        function toggleInfo() {
-            const infoImage = document.getElementById("info-image");
-            const isVisible = infoImage.style.display === "block";
-            if (isVisible) {
-                infoImage.style.display = "none";
+        function showUserInfo() {
+            // Toggle visibility of user info when the image is clicked
+            if (showImage) {
+                document.getElementById("user-info").style.display = "none";
             } else {
-                infoImage.style.display = "block";
+                document.getElementById("user-info").style.display = "block";
+                const accountData = JSON.parse(localStorage.getItem("account_" + localStorage.getItem("logged_in_email")));
+                document.getElementById("user-name-info-span").innerText = accountData.username;
+                document.getElementById("user-email-info").innerText = accountData.email;
             }
-
-            localStorage.setItem("info_visible", !isVisible);
+            showImage = !showImage;
         }
 
         window.onload = function() {
             const email = localStorage.getItem("logged_in_email");
-            const infoVisible = JSON.parse(localStorage.getItem("info_visible"));
             if (email && localStorage.getItem("trusted_email") === email) {
                 showWelcomePage(email);
-            }
-            if (infoVisible) {
-                document.getElementById("info-image").style.display = "block";
             }
         }
 
         setInterval(() => {
             const socialInfo = document.getElementById("social-info");
             socialInfo.style.display = socialInfo.style.display === "none" ? "block" : "none";
-        }, 5000);
+        }, 5000); // Toggle visibility every 5 seconds
 
+        setInterval(() => {
+            const welcomeMessage = document.getElementById("start-message");
+            welcomeMessage.style.display = welcomeMessage.style.display === "none" ? "block" : "none";
+        }, 1000); // Toggle visibility of welcome message every second
     </script>
 </body>
 </html>
-
 
 
