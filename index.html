@@ -92,11 +92,12 @@
             min-height: 100vh;
             background-color: #005678;
             overflow-y: auto;
+            padding-bottom: 100px;
         }
 
         #welcome-top {
             text-align: center;
-            padding: 20px 0 10px;
+            padding-top: 20px;
         }
 
         #welcome-top img {
@@ -116,7 +117,7 @@
 
         #options {
             text-align: center;
-            margin-top: 60px;
+            margin-top: 40px;
         }
 
         #options button {
@@ -188,10 +189,10 @@
     </div>
     <div id="options">
         <button onclick="location.href='chat.html'">Chat</button>
-        <button onclick="soonAlert()">Songs</button>
-        <button onclick="soonAlert()">MTA Discord</button>
-        <button onclick="soonAlert()">MTA Server</button>
-        <button onclick="soonAlert()">Discord</button>
+        <button onclick="notify('Coming Soon')">Songs</button>
+        <button onclick="notify('Coming Soon')">MTA Discord</button>
+        <button onclick="notify('Coming Soon')">MTA Server</button>
+        <button onclick="notify('Coming Soon')">Discord</button>
     </div>
     <div id="details-section">
         <h3>Your Info</h3>
@@ -232,18 +233,25 @@
         pw.type = pw.type === "password" ? "text" : "password";
     }
 
+    function notify(msg) {
+        if (Notification.permission === "granted") {
+            new Notification(msg);
+        } else if (Notification.permission !== "denied") {
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") new Notification(msg);
+            });
+        }
+    }
+
     function register() {
         const email = document.getElementById("register-email").value.trim();
         const username = document.getElementById("register-username").value.trim();
         const password = document.getElementById("register-password").value.trim();
 
-        if (!email || !username || !password) return alert("Fill in all fields");
-
-        const accountCount = Object.keys(localStorage).filter(k => k.startsWith("account_")).length;
-        if (accountCount >= 4) return alert("Max 4 accounts allowed");
+        if (!email || !username || !password) return notify("Fill in all fields");
 
         const existing = localStorage.getItem("account_" + email);
-        if (existing) return alert("Account already exists");
+        if (existing) return notify("Account already exists");
 
         const accountData = { email, username, password };
         localStorage.setItem("account_" + email, JSON.stringify(accountData));
@@ -256,14 +264,14 @@
         const email = document.getElementById("login-email").value.trim();
         const password = document.getElementById("login-password").value.trim();
         const trusted = localStorage.getItem("trusted_email");
-        if (email !== trusted) return alert("This device is not trusted for this email");
+        if (email !== trusted) return notify("This device is not trusted for this email");
 
         const account = JSON.parse(localStorage.getItem("account_" + email));
         if (account && account.password === password) {
             localStorage.setItem("logged_in_email", email);
             showWelcomePage(email);
         } else {
-            alert("Incorrect email or password");
+            notify("Incorrect email or password");
         }
     }
 
@@ -314,10 +322,6 @@
         closeChangePopup();
     }
 
-    function soonAlert() {
-        alert("Coming Soon");
-    }
-
     window.onload = function() {
         const email = localStorage.getItem("logged_in_email");
         if (email && localStorage.getItem("trusted_email") === email) {
@@ -327,5 +331,6 @@
 </script>
 </body>
 </html>
+
 
 
