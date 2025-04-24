@@ -28,9 +28,8 @@
         }
 
         @keyframes blink {
-            0% { opacity: 1; }
+            0%, 100% { opacity: 1; }
             50% { opacity: 0; }
-            100% { opacity: 1; }
         }
 
         .main-btn {
@@ -155,9 +154,40 @@
             display: none;
             z-index: 1000;
         }
+
+        #custom-notification-container {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: column-reverse;
+            z-index: 9999;
+        }
+
+        .custom-notification {
+            background-color: #f39c12;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            margin-top: 10px;
+            min-width: 200px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            animation: slide-in 0.5s ease, fade-out 0.5s ease 4.5s forwards;
+            font-size: 1em;
+        }
+
+        @keyframes slide-in {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fade-out {
+            to { opacity: 0; transform: translateY(20px); }
+        }
     </style>
 </head>
 <body>
+
 <div id="start-screen">
     <img src="logo.png" style="width: 150px; margin-bottom: 20px;">
     <div id="start-message">Welcome to Scorp Social Site</div>
@@ -217,6 +247,8 @@
     <button onclick="closeChangePopup()">Cancel</button>
 </div>
 
+<div id="custom-notification-container"></div>
+
 <script>
     function showLoginForm() {
         document.getElementById("start-screen").style.display = "none";
@@ -234,13 +266,14 @@
     }
 
     function notify(msg) {
-        if (Notification.permission === "granted") {
-            new Notification(msg);
-        } else if (Notification.permission !== "denied") {
-            Notification.requestPermission().then(permission => {
-                if (permission === "granted") new Notification(msg);
-            });
-        }
+        const container = document.getElementById("custom-notification-container");
+        const notification = document.createElement("div");
+        notification.className = "custom-notification";
+        notification.innerText = msg;
+        container.appendChild(notification);
+        setTimeout(() => {
+            notification.remove();
+        }, 5000);
     }
 
     function register() {
@@ -329,5 +362,6 @@
         }
     }
 </script>
+
 </body>
 </html>
