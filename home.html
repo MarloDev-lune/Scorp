@@ -76,9 +76,10 @@
       left: 50%;
       transform: translateX(-50%);
       display: flex;
-      justify-content: space-around;
+      justify-content: center;
       width: 100%;
-      margin-top: 30px;
+      flex-wrap: wrap;
+      gap: 20px;
     }
     .section div {
       padding: 15px 30px;
@@ -87,9 +88,25 @@
       box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
       cursor: pointer;
       text-align: center;
+      width: 150px;
     }
     .section div:hover {
       background-color: rgba(255, 165, 0, 0.7);
+    }
+    .contentBox {
+      display: none;
+      text-align: center;
+      width: 100%;
+    }
+    .contentBox img {
+      width: 100px;
+      height: 100px;
+      margin: 10px;
+    }
+    .contentBox p {
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -108,34 +125,55 @@
     <div id="suggestions" onclick="showSuggestions()">اقتراحات</div>
   </div>
 
-  <div id="playersContent" style="display: none;">
+  <div class="contentBox" id="playersContent">
     <h3>اللاعبين:</h3>
-    <img src="amin.jpg" alt="Amin" width="100px"><p>Amin</p>
-    <img src="smail.jpg" alt="Smail" width="100px"><p>Smail</p>
-    <img src="tomi.jpg" alt="Tomi" width="100px"><p>Tomi</p>
-    <img src="adm.jpg" alt="Adm" width="100px"><p>Adm</p>
-    <img src="ali.jpg" alt="Ali" width="100px"><p>Ali</p>
-    <img src="ahmed.jpg" alt="Ahmed" width="100px"><p>Ahmed</p>
-    <img src="bachir.jpg" alt="Bachir" width="100px"><p>Bachir</p>
+    <div>
+      <img src="amin.jpg" alt="Amin">
+      <p>Amin</p>
+    </div>
+    <div>
+      <img src="smail.jpg" alt="Smail">
+      <p>Smail</p>
+    </div>
+    <div>
+      <img src="tomi.jpg" alt="Tomi">
+      <p>Tomi</p>
+    </div>
+    <div>
+      <img src="adm.jpg" alt="Adm">
+      <p>Adm</p>
+    </div>
+    <div>
+      <img src="ali.jpg" alt="Ali">
+      <p>Ali</p>
+    </div>
+    <div>
+      <img src="ahmed.jpg" alt="Ahmed">
+      <p>Ahmed</p>
+    </div>
+    <div>
+      <img src="bachir.jpg" alt="Bachir">
+      <p>Bachir</p>
+    </div>
   </div>
 
-  <div id="matchesContent" style="display: none;">
+  <div class="contentBox" id="matchesContent">
     <h3>أوقات المباريات:</h3>
     <p>المباراة يوم: السبت على الساعة 7 صباحًا ضد نادي من غزة فكونوا في الموعد</p>
   </div>
 
-  <div id="statsContent" style="display: none;">
+  <div class="contentBox" id="statsContent">
     <h3>الإحصائيات:</h3>
     <p>سيتم التحديد بعد المباراة</p>
   </div>
 
-  <div id="postsContent" style="display: none;">
+  <div class="contentBox" id="postsContent">
     <h3>منشورات نتاع تجوار:</h3>
-    <img src="amin2.jpg" alt="Amin 2" width="100px">
+    <img src="amin2.jpg" alt="Amin 2">
     <p>سيد معلابالوش بلي راح ينيكها غدوا في لماتش</p>
   </div>
 
-  <div id="suggestionsContent" style="display: none;">
+  <div class="contentBox" id="suggestionsContent">
     <h3>اقتراحات:</h3>
     <p>قريبًا...</p>
   </div>
