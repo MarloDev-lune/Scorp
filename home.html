@@ -2,180 +2,108 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>Scorp Home</title>
+  <title>Scorp Team - Home</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
     body, html {
+      margin: 0;
+      padding: 0;
       width: 100%;
       height: 100%;
-      font-family: 'Arial';
-      background-color: black;
-      color: white;
+      font-family: 'Arial', sans-serif;
+      background: url('background.jpg') no-repeat center center fixed;
+      background-size: cover;
     }
-    #typewriter {
-      white-space: pre-wrap;
-      font-size: 20px;
-      padding: 20px;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    #logo {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 80px;
+    }
+    #scorpText {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 24px;
+      color: white;
+      font-weight: bold;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+    }
+    #introText {
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 32px;
+      color: white;
       text-align: center;
+      animation: fadeInOut 6s infinite;
+      letter-spacing: 2px;
+      font-weight: bold;
+    }
+    @keyframes fadeInOut {
+      0%,100% { opacity: 0; }
+      50% { opacity: 1; }
     }
     #skipBtn {
       position: absolute;
-      bottom: 20px;
+      top: 60%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 15px 30px;
+      font-size: 20px;
+      background-color: orange;
+      border: none;
+      cursor: pointer;
+      border-radius: 8px;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+    #skipBtn:hover {
+      background-color: #ff7f00;
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+    .section {
+      position: absolute;
+      top: 70%;
       left: 50%;
       transform: translateX(-50%);
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: orange;
-      border: none;
-      cursor: pointer;
-      display: none;
-    }
-    #mainMenu {
-      display: none;
-      background: url('background.jpg') no-repeat center center fixed;
-      background-size: cover;
-      height: 100vh;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
+      justify-content: space-around;
+      width: 100%;
+      margin-top: 30px;
     }
-    .menu-btn {
-      padding: 10px 30px;
-      font-size: 18px;
-      background-color: orange;
-      border: none;
+    .section div {
+      padding: 15px 30px;
+      background-color: rgba(255, 255, 255, 0.7);
+      border-radius: 8px;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
       cursor: pointer;
-    }
-    #contentArea {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-    }
-    .player-img {
-      width: 100px;
-      margin: 10px;
       text-align: center;
     }
-    .player-img img {
-      width: 100%;
-      border-radius: 8px;
-    }
-    #backBtn, #exitBtn {
-      margin-top: 20px;
-      padding: 10px 20px;
-      background-color: red;
-      border: none;
-      color: white;
-      cursor: pointer;
+    .section div:hover {
+      background-color: rgba(255, 165, 0, 0.7);
     }
   </style>
 </head>
 <body>
-  <div id="typewriter"></div>
-  <button id="skipBtn" onclick="showMenu()">تخطي</button>
-
-  <div id="mainMenu">
-    <button class="menu-btn" onclick="showPlayers()">1 - الاعبين</button>
-    <button class="menu-btn" onclick="showMatches()">2 - اوقات المباريات</button>
-    <button class="menu-btn" onclick="showStats()">3 - الاحصائيات</button>
-    <button class="menu-btn" onclick="showPosts()">4 - منشورات نتاع تجوار</button>
-    <button class="menu-btn" onclick="showSuggestions()">5 - اقتراحات</button>
+  <img id="logo" src="logo.png" alt="logo">
+  <div id="scorpText">Scorp</div>
+  
+  <div id="introText">مرحبا بيك في لموقع نتاع ليكيب نتاعنا لهنا نعرضوا جميع المعلومات وهاذا الموقع امن ومخدوم من طرف مارلو وللعلم هاذا الموقع تجريبي فقط</div>
+  <button id="skipBtn" onclick="skipIntro()">Skip</button>
+  
+  <div class="section">
+    <div id="players">الاعبين</div>
+    <div id="matches">أوقات المباريات</div>
+    <div id="stats">الإحصائيات</div>
+    <div id="posts">منشورات نتاع تجوار</div>
+    <div id="suggestions">اقتراحات</div>
   </div>
 
-  <div id="contentArea"></div>
-
   <script>
-    const writerText = "مرحبا بيك في لموقع نتاع ليكيب نتاعنا لهنا نعرضوا جميع المعلومات وهاذا الموقع امن ومخدوم من طرف مارلو وللعلم هاذا الموقع تجريبي فقط";
-    const typewriter = document.getElementById("typewriter");
-    const skipBtn = document.getElementById("skipBtn");
-    const mainMenu = document.getElementById("mainMenu");
-    const contentArea = document.getElementById("contentArea");
-
-    let i = 0;
-    function typeEffect() {
-      if (i < writerText.length) {
-        typewriter.textContent += writerText.charAt(i);
-        i++;
-        setTimeout(typeEffect, 50);
-      } else {
-        skipBtn.style.display = "block";
-      }
-    }
-    typeEffect();
-
-    function showMenu() {
-      document.body.style.background = "url('background.jpg') no-repeat center center fixed";
-      document.body.style.backgroundSize = "cover";
-      typewriter.style.display = "none";
-      skipBtn.style.display = "none";
-      mainMenu.style.display = "flex";
-    }
-
-    function clearContent() {
-      contentArea.innerHTML = "";
-      contentArea.style.display = "flex";
-      mainMenu.style.display = "none";
-    }
-
-    function showPlayers() {
-      clearContent();
-      const players = ["amin", "smail", "tomi", "adm", "ali", "ahmed", "bachir"];
-      players.forEach(name => {
-        const div = document.createElement("div");
-        div.className = "player-img";
-        div.innerHTML = `<img src="${name}.jpg"><div>${name}</div>`;
-        contentArea.appendChild(div);
-      });
-      addBackExit();
-    }
-
-    function showMatches() {
-      clearContent();
-      contentArea.innerHTML = "<h2>المبارات يوم : السبت على الساعة 7 صباحا ضد نادي من غزة فكونو في لموعد</h2>";
-      addBackExit();
-    }
-
-    function showStats() {
-      clearContent();
-      contentArea.innerHTML = "<h2>سيتم التحديد بعد المباراة</h2>";
-      addBackExit();
-    }
-
-    function showPosts() {
-      clearContent();
-      contentArea.innerHTML = '<img src="amin2.jpg" style="width:200px"><p>سيد معلابالوش بلي راح ينيكها غدوا في لماتش</p>';
-      addBackExit();
-    }
-
-    function showSuggestions() {
-      clearContent();
-      contentArea.innerHTML = "<h2>قريبا</h2>";
-      addBackExit();
-    }
-
-    function addBackExit() {
-      const backBtn = document.createElement("button");
-      backBtn.id = "backBtn";
-      backBtn.textContent = "رجوع";
-      backBtn.onclick = () => {
-        contentArea.style.display = "none";
-        mainMenu.style.display = "flex";
-      };
-
-      const exitBtn = document.createElement("button");
-      exitBtn.id = "exitBtn";
-      exitBtn.textContent = "خروج";
-      exitBtn.onclick = () => window.location.href = "index.html";
-
-      contentArea.appendChild(backBtn);
-      contentArea.appendChild(exitBtn);
+    function skipIntro() {
+      document.getElementById('introText').style.display = 'none';
+      document.getElementById('skipBtn').style.display = 'none';
     }
   </script>
 </body>
