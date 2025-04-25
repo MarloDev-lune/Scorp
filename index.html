@@ -1,367 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scorp Social Site</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #111;
-            color: white;
-        }
-
-        #start-screen {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column;
-            text-align: center;
-        }
-
-        #start-message {
-            font-size: 2em;
-            margin-bottom: 20px;
-            animation: blink 1s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        .main-btn {
-            padding: 10px 20px;
-            background-color: #f39c12;
-            border: none;
-            color: white;
-            font-size: 1.2em;
-            cursor: pointer;
-            margin: 5px;
-        }
-
-        .form {
-            display: none;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #222;
-            padding: 30px;
-            border-radius: 8px;
-            width: 300px;
-            text-align: center;
-        }
-
-        input[type="password"] + button.toggle-password {
-            margin-top: -10px;
-            margin-bottom: 10px;
-            background: none;
-            border: none;
-            color: #f39c12;
-            cursor: pointer;
-            font-size: 0.9em;
-        }
-
-        input {
-            padding: 10px;
-            font-size: 1em;
-            width: 100%;
-            margin-bottom: 10px;
-            border: 2px solid #444;
-            border-radius: 5px;
-            background-color: #333;
-            color: white;
-        }
-
-        button {
-            padding: 10px 20px;
-            background-color: #f39c12;
-            border: none;
-            color: white;
-            font-size: 1.2em;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        #welcome-page {
-            display: none;
-            min-height: 100vh;
-            background-color: #005678;
-            overflow-y: auto;
-            padding-bottom: 100px;
-        }
-
-        #welcome-top {
-            text-align: center;
-            padding-top: 20px;
-        }
-
-        #welcome-top img {
-            width: 80px;
-        }
-
-        #welcome-top h1 {
-            margin: 10px 0;
-        }
-
-        #username-display {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            font-size: 1em;
-        }
-
-        #options {
-            text-align: center;
-            margin-top: 40px;
-        }
-
-        #options button {
-            display: block;
-            margin: 20px auto;
-            width: 200px;
-            font-size: 1.4em;
-        }
-
-        #details-section {
-            background-color: #003f5e;
-            padding: 20px;
-            margin-top: 100px;
-        }
-
-        #details-section div {
-            margin: 10px 0;
-        }
-
-        #footer {
-            background-color: #002c40;
-            padding: 10px;
-            text-align: center;
-            color: white;
-        }
-
-        .popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #222;
-            padding: 20px;
-            border-radius: 10px;
-            display: none;
-            z-index: 1000;
-        }
-
-        #custom-notification-container {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            display: flex;
-            flex-direction: column-reverse;
-            z-index: 9999;
-        }
-
-        .custom-notification {
-            background-color: #f39c12;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 6px;
-            margin-top: 10px;
-            min-width: 200px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            animation: slide-in 0.5s ease, fade-out 0.5s ease 4.5s forwards;
-            font-size: 1em;
-        }
-
-        @keyframes slide-in {
-            from { transform: translateY(100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        @keyframes fade-out {
-            to { opacity: 0; transform: translateY(20px); }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Scorp Team</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      font-family: 'Arial';
+      background: url('background.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+    #logo {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 50px;
+    }
+    #scorpText {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 20px;
+      color: white;
+    }
+    #welcome {
+      position: absolute;
+      top: 30%;
+      width: 100%;
+      text-align: center;
+      font-size: 30px;
+      color: white;
+      animation: fadeInOut 4s infinite;
+    }
+    @keyframes fadeInOut {
+      0%,100% { opacity: 0; }
+      50% { opacity: 1; }
+    }
+    #enterBtn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 15px 30px;
+      font-size: 20px;
+      background-color: orange;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-
-<div id="start-screen">
-    <img src="logo.png" style="width: 150px; margin-bottom: 20px;">
-    <div id="start-message">Welcome to Scorp Social Site</div>
-    <button class="main-btn" onclick="showLoginForm()">Login</button>
-    <button class="main-btn" onclick="showRegisterForm()">Register</button>
-</div>
-
-<div id="login-form" class="form">
-    <h2>Login</h2>
-    <input type="email" id="login-email" placeholder="Email">
-    <input type="password" id="login-password" placeholder="Password">
-    <button onclick="login()">Login</button>
-</div>
-
-<div id="register-form" class="form">
-    <h2>Register</h2>
-    <input type="email" id="register-email" placeholder="Email">
-    <input type="text" id="register-username" placeholder="Username">
-    <input type="password" id="register-password" placeholder="Password">
-    <button class="toggle-password" onclick="toggleRegisterPassword()">Show/Hide Password</button>
-    <button onclick="register()">Register</button>
-</div>
-
-<div id="welcome-page">
-    <div id="username-display"></div>
-    <div id="welcome-top">
-        <img src="logo.png">
-        <h1>Scorp</h1>
-    </div>
-    <div id="options">
-        <button onclick="location.href='chat.html'">Chat</button>
-        <button onclick="location.href='script.html'">Songs</button>
-        <button onclick="notify('Coming Soon')">MTA Discord</button>
-        <button onclick="notify('Coming Soon')">MTA Server</button>
-        <button onclick="notify('Coming Soon')">Discord</button>
-    </div>
-    <div id="details-section">
-        <h3>Your Info</h3>
-        <div><strong>Username:</strong> <span id="user-name"></span></div>
-        <div><strong>Email:</strong> <span id="user-email"></span></div>
-        <div><strong>Password:</strong> <span id="user-password" onclick="togglePassword()">••••••••</span></div>
-        <br>
-        <button onclick="openChangePopup()">Change Name/Password</button>
-        <br><br>
-        <button onclick="logout()">Logout</button>
-    </div>
-    <div id="footer">
-        This site is safe and smooth. You can enjoy your experience freely without worries.
-    </div>
-</div>
-
-<div class="popup" id="change-popup">
-    <h3>Change Info</h3>
-    <input type="text" id="new-username" placeholder="New Username">
-    <input type="password" id="new-password" placeholder="New Password">
-    <button onclick="applyChanges()">Apply</button>
-    <button onclick="closeChangePopup()">Cancel</button>
-</div>
-
-<div id="custom-notification-container"></div>
-
-<script>
-    function showLoginForm() {
-        document.getElementById("start-screen").style.display = "none";
-        document.getElementById("login-form").style.display = "block";
-    }
-
-    function showRegisterForm() {
-        document.getElementById("start-screen").style.display = "none";
-        document.getElementById("register-form").style.display = "block";
-    }
-
-    function toggleRegisterPassword() {
-        const pw = document.getElementById("register-password");
-        pw.type = pw.type === "password" ? "text" : "password";
-    }
-
-    function notify(msg) {
-        const container = document.getElementById("custom-notification-container");
-        const notification = document.createElement("div");
-        notification.className = "custom-notification";
-        notification.innerText = msg;
-        container.appendChild(notification);
-        setTimeout(() => {
-            notification.remove();
-        }, 5000);
-    }
-
-    function register() {
-        const email = document.getElementById("register-email").value.trim();
-        const username = document.getElementById("register-username").value.trim();
-        const password = document.getElementById("register-password").value.trim();
-
-        if (!email || !username || !password) return notify("Fill in all fields");
-
-        const existing = localStorage.getItem("account_" + email);
-        if (existing) return notify("Account already exists");
-
-        const accountData = { email, username, password };
-        localStorage.setItem("account_" + email, JSON.stringify(accountData));
-        localStorage.setItem("trusted_email", email);
-        localStorage.setItem("logged_in_email", email);
-        showWelcomePage(email);
-    }
-
-    function login() {
-        const email = document.getElementById("login-email").value.trim();
-        const password = document.getElementById("login-password").value.trim();
-        const trusted = localStorage.getItem("trusted_email");
-        if (email !== trusted) return notify("This device is not trusted for this email");
-
-        const account = JSON.parse(localStorage.getItem("account_" + email));
-        if (account && account.password === password) {
-            localStorage.setItem("logged_in_email", email);
-            showWelcomePage(email);
-        } else {
-            notify("Incorrect email or password");
-        }
-    }
-
-    function logout() {
-        localStorage.removeItem("logged_in_email");
-        location.reload();
-    }
-
-    function showWelcomePage(email) {
-        const account = JSON.parse(localStorage.getItem("account_" + email));
-        if (!account) return;
-
-        document.getElementById("user-name").innerText = account.username;
-        document.getElementById("user-email").innerText = account.email;
-        document.getElementById("user-password").dataset.password = account.password;
-        document.getElementById("user-password").innerText = "••••••••";
-        document.getElementById("username-display").innerText = account.username;
-
-        document.querySelectorAll(".form, #start-screen").forEach(el => el.style.display = "none");
-        document.getElementById("welcome-page").style.display = "block";
-    }
-
-    function togglePassword() {
-        const pwEl = document.getElementById("user-password");
-        pwEl.innerText = pwEl.innerText === "••••••••" ? pwEl.dataset.password : "••••••••";
-    }
-
-    function openChangePopup() {
-        document.getElementById("change-popup").style.display = "block";
-    }
-
-    function closeChangePopup() {
-        document.getElementById("change-popup").style.display = "none";
-    }
-
-    function applyChanges() {
-        const newUsername = document.getElementById("new-username").value.trim();
-        const newPassword = document.getElementById("new-password").value.trim();
-        const email = localStorage.getItem("logged_in_email");
-        const account = JSON.parse(localStorage.getItem("account_" + email));
-
-        if (newUsername) account.username = newUsername;
-        if (newPassword) account.password = newPassword;
-
-        localStorage.setItem("account_" + email, JSON.stringify(account));
-        localStorage.setItem("trusted_email", email);
-        showWelcomePage(email);
-        closeChangePopup();
-    }
-
-    window.onload = function() {
-        const email = localStorage.getItem("logged_in_email");
-        if (email && localStorage.getItem("trusted_email") === email) {
-            showWelcomePage(email);
-        }
-    }
-</script>
-
+  <img id="logo" src="logo.png" alt="logo">
+  <div id="scorpText">Scorp</div>
+  <div id="welcome">Mar7ba Bikm Fi Scorp Team</div>
+  <button id="enterBtn" onclick="window.location.href='home.html'">Enter Scorp Site</button>
 </body>
 </html>
