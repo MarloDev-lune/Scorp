@@ -36,13 +36,20 @@
       font-size: 32px;
       color: white;
       text-align: center;
-      animation: fadeInOut 6s infinite;
       letter-spacing: 2px;
       font-weight: bold;
+      white-space: nowrap;
+      overflow: hidden;
+      width: 0;
+      animation: typing 5s steps(60) forwards;
     }
-    @keyframes fadeInOut {
-      0%,100% { opacity: 0; }
-      50% { opacity: 1; }
+    @keyframes typing {
+      0% {
+        width: 0;
+      }
+      100% {
+        width: 100%;
+      }
     }
     #skipBtn {
       position: absolute;
@@ -63,6 +70,7 @@
       transform: translate(-50%, -50%) scale(1.1);
     }
     .section {
+      display: none;
       position: absolute;
       top: 70%;
       left: 50%;
@@ -90,20 +98,82 @@
   <div id="scorpText">Scorp</div>
   
   <div id="introText">مرحبا بيك في لموقع نتاع ليكيب نتاعنا لهنا نعرضوا جميع المعلومات وهاذا الموقع امن ومخدوم من طرف مارلو وللعلم هاذا الموقع تجريبي فقط</div>
-  <button id="skipBtn" onclick="skipIntro()">Skip</button>
+  <button id="skipBtn" onclick="showSections()">Skip</button>
   
-  <div class="section">
-    <div id="players">الاعبين</div>
-    <div id="matches">أوقات المباريات</div>
-    <div id="stats">الإحصائيات</div>
-    <div id="posts">منشورات نتاع تجوار</div>
-    <div id="suggestions">اقتراحات</div>
+  <div class="section" id="sections">
+    <div id="players" onclick="showPlayers()">الاعبين</div>
+    <div id="matches" onclick="showMatches()">أوقات المباريات</div>
+    <div id="stats" onclick="showStats()">الإحصائيات</div>
+    <div id="posts" onclick="showPosts()">منشورات نتاع تجوار</div>
+    <div id="suggestions" onclick="showSuggestions()">اقتراحات</div>
+  </div>
+
+  <div id="playersContent" style="display: none;">
+    <h3>اللاعبين:</h3>
+    <img src="amin.jpg" alt="Amin" width="100px"><p>Amin</p>
+    <img src="smail.jpg" alt="Smail" width="100px"><p>Smail</p>
+    <img src="tomi.jpg" alt="Tomi" width="100px"><p>Tomi</p>
+    <img src="adm.jpg" alt="Adm" width="100px"><p>Adm</p>
+    <img src="ali.jpg" alt="Ali" width="100px"><p>Ali</p>
+    <img src="ahmed.jpg" alt="Ahmed" width="100px"><p>Ahmed</p>
+    <img src="bachir.jpg" alt="Bachir" width="100px"><p>Bachir</p>
+  </div>
+
+  <div id="matchesContent" style="display: none;">
+    <h3>أوقات المباريات:</h3>
+    <p>المباراة يوم: السبت على الساعة 7 صباحًا ضد نادي من غزة فكونوا في الموعد</p>
+  </div>
+
+  <div id="statsContent" style="display: none;">
+    <h3>الإحصائيات:</h3>
+    <p>سيتم التحديد بعد المباراة</p>
+  </div>
+
+  <div id="postsContent" style="display: none;">
+    <h3>منشورات نتاع تجوار:</h3>
+    <img src="amin2.jpg" alt="Amin 2" width="100px">
+    <p>سيد معلابالوش بلي راح ينيكها غدوا في لماتش</p>
+  </div>
+
+  <div id="suggestionsContent" style="display: none;">
+    <h3>اقتراحات:</h3>
+    <p>قريبًا...</p>
   </div>
 
   <script>
-    function skipIntro() {
+    function showSections() {
       document.getElementById('introText').style.display = 'none';
       document.getElementById('skipBtn').style.display = 'none';
+      document.getElementById('sections').style.display = 'flex';
+    }
+
+    function showPlayers() {
+      document.getElementById('playersContent').style.display = 'block';
+      hideSections();
+    }
+
+    function showMatches() {
+      document.getElementById('matchesContent').style.display = 'block';
+      hideSections();
+    }
+
+    function showStats() {
+      document.getElementById('statsContent').style.display = 'block';
+      hideSections();
+    }
+
+    function showPosts() {
+      document.getElementById('postsContent').style.display = 'block';
+      hideSections();
+    }
+
+    function showSuggestions() {
+      document.getElementById('suggestionsContent').style.display = 'block';
+      hideSections();
+    }
+
+    function hideSections() {
+      document.getElementById('sections').style.display = 'none';
     }
   </script>
 </body>
