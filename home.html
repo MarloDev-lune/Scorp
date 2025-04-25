@@ -40,7 +40,7 @@
       font-weight: bold;
       white-space: nowrap;
       overflow: hidden;
-      width: 60%; /* نسبة العرض من الصفحة */
+      width: 60%;
       animation: typing 7s steps(40) forwards;
     }
     @keyframes typing {
@@ -108,15 +108,38 @@
       font-size: 18px;
       font-weight: bold;
     }
+    #backBtn, #logoutBtn {
+      position: absolute;
+      top: 10px;
+      left: 20px;
+      padding: 10px 20px;
+      font-size: 18px;
+      background-color: #ff7f00;
+      border: none;
+      color: white;
+      cursor: pointer;
+      border-radius: 8px;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    }
+    #backBtn:hover, #logoutBtn:hover {
+      background-color: #ff5500;
+      transform: scale(1.05);
+    }
   </style>
 </head>
 <body>
   <img id="logo" src="logo.png" alt="logo">
   <div id="scorpText">Scorp</div>
-  
+
+  <!-- نص يظهر عند الدخول -->
   <div id="introText">مرحبا بيك في لموقع نتاع ليكيب نتاعنا لهنا نعرضوا جميع المعلومات وهاذا الموقع امن ومخدوم من طرف مارلو وللعلم هاذا الموقع تجريبي فقط</div>
-  <button id="skipBtn" onclick="showSections()">Skip</button>
-  
+  <button id="skipBtn" onclick="showSections()">تخطي</button>
+
+  <!-- زر الرجوع والخروج -->
+  <button id="backBtn" onclick="goBack()">رجوع</button>
+  <button id="logoutBtn" onclick="logout()">خروج</button>
+
+  <!-- الأيقونات تظهر عند الضغط على "تخطي" -->
   <div class="section" id="sections">
     <div id="players" onclick="showPlayers()">الاعبين</div>
     <div id="matches" onclick="showMatches()">أوقات المباريات</div>
@@ -125,6 +148,7 @@
     <div id="suggestions" onclick="showSuggestions()">اقتراحات</div>
   </div>
 
+  <!-- محتوى اللاعبين -->
   <div class="contentBox" id="playersContent">
     <h3>اللاعبين:</h3>
     <div>
@@ -157,22 +181,26 @@
     </div>
   </div>
 
+  <!-- محتوى المباريات -->
   <div class="contentBox" id="matchesContent">
     <h3>أوقات المباريات:</h3>
     <p>المباراة يوم: السبت على الساعة 7 صباحًا ضد نادي من غزة فكونوا في الموعد</p>
   </div>
 
+  <!-- محتوى الإحصائيات -->
   <div class="contentBox" id="statsContent">
     <h3>الإحصائيات:</h3>
     <p>سيتم التحديد بعد المباراة</p>
   </div>
 
+  <!-- محتوى المنشورات -->
   <div class="contentBox" id="postsContent">
     <h3>منشورات نتاع تجوار:</h3>
     <img src="amin2.jpg" alt="Amin 2">
     <p>سيد معلابالوش بلي راح ينيكها غدوا في لماتش</p>
   </div>
 
+  <!-- محتوى الاقتراحات -->
   <div class="contentBox" id="suggestionsContent">
     <h3>اقتراحات:</h3>
     <p>قريبًا...</p>
@@ -212,6 +240,15 @@
 
     function hideSections() {
       document.getElementById('sections').style.display = 'none';
+    }
+
+    function goBack() {
+      window.history.back();
+    }
+
+    function logout() {
+      alert('تم تسجيل الخروج');
+      window.location.href = 'index.html'; // تغيير الرابط حسب ما يناسبك
     }
   </script>
 </body>
