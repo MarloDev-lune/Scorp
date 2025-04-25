@@ -15,30 +15,18 @@
       color: white;
       overflow: hidden;
     }
+
     #introText {
       position: absolute;
       top: 30%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 70%;
-      text-align: center;
-      font-size: 24px;
+      right: 5%;
+      width: 40%;
+      font-size: 22px;
       font-weight: bold;
       white-space: pre-line;
+      line-height: 1.8;
     }
-    #skipBtn {
-      display: none;
-      position: absolute;
-      bottom: 100px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 12px 30px;
-      font-size: 18px;
-      background-color: orange;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
+
     #logoutBtn {
       position: absolute;
       bottom: 20px;
@@ -51,6 +39,7 @@
       font-size: 16px;
       cursor: pointer;
     }
+
     #backBtn {
       display: none;
       position: absolute;
@@ -64,6 +53,7 @@
       font-size: 16px;
       cursor: pointer;
     }
+
     .section {
       display: none;
       position: absolute;
@@ -75,6 +65,7 @@
       align-items: center;
       gap: 20px;
     }
+
     .section div {
       background: rgba(255, 255, 255, 0.2);
       padding: 15px 30px;
@@ -82,27 +73,42 @@
       font-size: 18px;
       cursor: pointer;
     }
+
     .contentBox {
       display: none;
       text-align: center;
       margin-top: 100px;
     }
+
     .contentBox img {
       width: 100px;
       margin: 10px;
     }
+
     .contentBox p {
       font-size: 18px;
       margin: 5px 0;
+    }
+
+    #notification {
+      display: none;
+      position: fixed;
+      bottom: 10px;
+      left: 10px;
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
 
 <div id="introText"></div>
-<button id="skipBtn" onclick="showSections()">تخطي</button>
 <button id="logoutBtn" onclick="logout()">خروج</button>
 <button id="backBtn" onclick="goBack()">رجوع</button>
+<div id="notification">You have been logged out</div>
 
 <div class="section" id="sections">
   <div onclick="showContent('playersContent')">الاعبين</div>
@@ -148,7 +154,6 @@
   const message = "مرحبا بيك في لموقع نتاع ليكيب نتاعنا لهنا نعرضوا جميع المعلومات وهاذا الموقع امن ومخدوم من طرف مارلو وللعلم هاذا الموقع تجريبي فقط";
   const words = message.split(' ');
   const introEl = document.getElementById('introText');
-  const skipBtn = document.getElementById('skipBtn');
   let currentLine = '';
   let lineWordCount = 0;
   let finalText = '';
@@ -156,8 +161,9 @@
 
   function typeLine() {
     if (index >= words.length) {
-      introEl.innerText = finalText;
-      skipBtn.style.display = 'block';
+      introEl.innerText = finalText + currentLine;
+      // بعد الكتابة، تظهر الخانات
+      document.getElementById('sections').style.display = 'flex';
       return;
     }
 
@@ -175,28 +181,30 @@
     setTimeout(typeLine, 300);
   }
 
-  function showSections() {
-    document.getElementById('introText').style.display = 'none';
-    document.getElementById('skipBtn').style.display = 'none';
-    document.getElementById('sections').style.display = 'flex';
-  }
-
   function showContent(id) {
     document.querySelectorAll('.contentBox').forEach(box => box.style.display = 'none');
     document.getElementById(id).style.display = 'block';
     document.getElementById('sections').style.display = 'none';
+    document.getElementById('introText').style.display = 'none';
+    document.getElementById('logoutBtn').style.display = 'none';
     document.getElementById('backBtn').style.display = 'block';
   }
 
   function goBack() {
     document.querySelectorAll('.contentBox').forEach(box => box.style.display = 'none');
     document.getElementById('sections').style.display = 'flex';
+    document.getElementById('introText').style.display = 'block';
+    document.getElementById('logoutBtn').style.display = 'block';
     document.getElementById('backBtn').style.display = 'none';
   }
 
   function logout() {
-    alert('تم تسجيل الخروج');
-    window.location.href = 'index.html';
+    const notif = document.getElementById('notification');
+    notif.style.display = 'block';
+    setTimeout(() => {
+      notif.style.display = 'none';
+      window.location.href = 'index.html';
+    }, 2000);
   }
 
   window.onload = typeLine;
@@ -204,4 +212,3 @@
 
 </body>
 </html>
-
