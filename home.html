@@ -103,14 +103,16 @@
     }
 
     .players-table th {
-      background-color: rgba(255, 165, 0, 0.5);
+      background-color: rgba(255, 165, 0, 0.6);
     }
 
     .players-table img {
-      width: 120px;
-      height: 120px;
-      object-fit: cover;
+      width: 150px;
+      height: 150px;
+      object-fit: contain; /* هذا سيجعل الصورة كاملة بدون قص */
       border-radius: 10px;
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 5px;
     }
   </style>
 </head>
@@ -127,7 +129,7 @@
   <div onclick="showContent('playersContent')">اللاعبين</div>
   <div onclick="showContent('matchesContent')">أوقات المباريات</div>
   <div onclick="showContent('statsContent')">الإحصائيات</div>
-  <div onclick="showContent('postsContent')">منشورات نتاع تجوار</div>
+  <div onclick="showContent('postsContent')">منشورات اللاعبين</div>
   <div onclick="showContent('suggestionsContent')">اقتراحات</div>
 </div>
 
@@ -136,9 +138,9 @@
   <h3>اللاعبين:</h3>
   <table class="players-table">
     <tr>
-      <th>Photo</th>
-      <th>Name</th>
-      <th>Info</th>
+      <th>صورة</th>
+      <th>الاسم</th>
+      <th>معلومات</th>
     </tr>
     <tr>
       <td><img src="amin.jpg" alt="Amin"></td>
@@ -148,62 +150,63 @@
     <tr>
       <td><img src="smail.jpg" alt="Smail"></td>
       <td>Smail</td>
-      <td>لاعب ممتاز وجيد بدنيًا</td>
+      <td>لاعب سريع ومراوغ</td>
     </tr>
     <tr>
       <td><img src="tomi.jpg" alt="Tomi"></td>
       <td>Tomi</td>
-      <td>لاعب ممتاز وجيد بدنيًا</td>
+      <td>لاعب صاحب رؤية رائعة</td>
     </tr>
     <tr>
       <td><img src="adm.jpg" alt="Adm"></td>
       <td>Adm</td>
-      <td>لاعب ممتاز وجيد بدنيًا</td>
+      <td>قائد ممتاز في الملعب</td>
     </tr>
     <tr>
       <td><img src="ali.jpg" alt="Ali"></td>
       <td>Ali</td>
-      <td>لاعب ممتاز وجيد بدنيًا</td>
+      <td>هداف لا يرحم</td>
     </tr>
     <tr>
       <td><img src="ahmed.jpg" alt="Ahmed"></td>
       <td>Ahmed</td>
-      <td>لاعب ممتاز وجيد بدنيًا</td>
+      <td>مدافع قوي وذكي</td>
     </tr>
     <tr>
       <td><img src="bachir.jpg" alt="Bachir"></td>
       <td>Bachir</td>
-      <td>لاعب ممتاز وجيد بدنيًا</td>
+      <td>لاعب متعدد المراكز</td>
     </tr>
   </table>
 </div>
 
 <div class="contentBox" id="matchesContent">
   <h3>نتائج المباريات:</h3>
-  <p>انتهت مباراة الأولى بخسارة نادي سكورب ضد غزة بفارق 3 أهداف</p>
-  <h3>أوقات المباريات:</h3>
-  <p>المباراة القادمة: لم يتم التحديد بعد</p>
+  <p>انتهت المباراة الأولى بخسارة نادي سكورب ضد غزة بفارق 3 أهداف.</p>
+  <h3>أوقات المباريات القادمة:</h3>
+  <p>لم يتم تحديدها بعد.</p>
 </div>
 
 <div class="contentBox" id="statsContent">
   <h3>الإحصائيات:</h3>
-  <p>الأهداف: لم تُحسب بعد</p>
-  <p>أسيستات: جاري التحديث</p>
-  <p>خسارات: 1</p>
-  <p>فوز: 0</p>
+  <p>الأهداف: سيتم التحديث قريباً.</p>
+  <p>الأسيستات: قيد المراجعة.</p>
+  <p>الخسائر: 1</p>
+  <p>الانتصارات: 0</p>
 </div>
 
 <div class="contentBox" id="postsContent">
-  <h3>منشورات نتاع تجوار:</h3>
+  <h3>منشورات اللاعبين:</h3>
+  <p>قريباً سيتم إضافة منشورات اللاعبين هنا.</p>
 </div>
 
 <div class="contentBox" id="suggestionsContent">
   <h3>اقتراحات:</h3>
-  <p>قريبًا...</p>
+  <p>نرحب بأفكاركم ومقترحاتكم لتطوير الفريق.</p>
 </div>
 
 <script>
-  const message = "مرحبا بك في موقع الفريق! هنا ستجد كل المعلومات. الموقع آمن ومطور بواسطة مارلو، والموقع تجريبي فقط.";
+  const message = "مرحبا بك في موقع فريق SCORP! هنا ستجد كل المعلومات المتعلقة بالفريق. الموقع تجريبي وتم تطويره بواسطة مارلو.";
   const words = message.split(' ');
   const introEl = document.getElementById('introText');
   let currentLine = '';
