@@ -5,17 +5,15 @@
   <title>Scorp Team - Home</title>
   <style>
     body, html {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  font-family: 'Arial', sans-serif;
-  background: url('background.jpg') no-repeat center center fixed;
-  background-size: cover;
-  color: white;
-  overflow-y: auto; /* ← هنا التغيير */
-}
-;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      font-family: 'Arial', sans-serif;
+      background: url('background.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      overflow-y: auto;
     }
 
     #introText {
@@ -29,12 +27,9 @@
       line-height: 1.8;
     }
 
-    #logoutBtn {
+    #logoutBtn, #backBtn {
       position: absolute;
-      bottom: 20px;
-      left: 20px;
       padding: 10px 20px;
-      background-color: red;
       border: none;
       border-radius: 5px;
       color: white;
@@ -42,18 +37,17 @@
       cursor: pointer;
     }
 
+    #logoutBtn {
+      bottom: 20px;
+      left: 20px;
+      background-color: red;
+    }
+
     #backBtn {
       display: none;
-      position: absolute;
       bottom: 20px;
       right: 20px;
-      padding: 10px 20px;
       background-color: orange;
-      border: none;
-      border-radius: 5px;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
     }
 
     .section {
@@ -83,8 +77,10 @@
     }
 
     .contentBox img {
-      width: 100px;
-      margin: 10px;
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 10px;
     }
 
     .contentBox p {
@@ -103,6 +99,24 @@
       border-radius: 8px;
       font-size: 14px;
     }
+
+    table {
+      width: 80%;
+      margin: 0 auto;
+      border-collapse: collapse;
+      margin-top: 30px;
+    }
+
+    th, td {
+      border: 1px solid white;
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background-color: rgba(255, 255, 255, 0.2);
+      font-size: 20px;
+    }
   </style>
 </head>
 <body>
@@ -110,7 +124,7 @@
 <div id="introText"></div>
 <button id="logoutBtn" onclick="logout()">خروج</button>
 <button id="backBtn" onclick="goBack()">رجوع</button>
-<div id="notification">You have been logged out</div>
+<div id="notification">تم تسجيل الخروج</div>
 
 <div class="section" id="sections">
   <div onclick="showContent('playersContent')">الاعبين</div>
@@ -123,29 +137,67 @@
 <!-- محتوى الأقسام -->
 <div class="contentBox" id="playersContent">
   <h3>اللاعبين:</h3>
-  <div><img src="amin.jpg"><p>Amin</p></div>
-  <div><img src="smail.jpg"><p>Smail</p></div>
-  <div><img src="tomi.jpg"><p>Tomi</p></div>
-  <div><img src="adm.jpg"><p>Adm</p></div>
-  <div><img src="ali.jpg"><p>Ali</p></div>
-  <div><img src="ahmed.jpg"><p>Ahmed</p></div>
-  <div><img src="bachir.jpg"><p>Bachir</p></div>
+  <table>
+    <thead>
+      <tr>
+        <th>Photo</th>
+        <th>Name</th>
+        <th>Info</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><img src="amin.jpg" alt="Amin"></td>
+        <td>Amin</td>
+        <td>لاعب ممتاز وجيد بدنيا</td>
+      </tr>
+      <tr>
+        <td><img src="smail.jpg" alt="Smail"></td>
+        <td>Smail</td>
+        <td>لاعب ممتاز وجيد بدنيا</td>
+      </tr>
+      <tr>
+        <td><img src="tomi.jpg" alt="Tomi"></td>
+        <td>Tomi</td>
+        <td>لاعب ممتاز وجيد بدنيا</td>
+      </tr>
+      <tr>
+        <td><img src="adm.jpg" alt="Adm"></td>
+        <td>Adm</td>
+        <td>لاعب ممتاز وجيد بدنيا</td>
+      </tr>
+      <tr>
+        <td><img src="ali.jpg" alt="Ali"></td>
+        <td>Ali</td>
+        <td>لاعب ممتاز وجيد بدنيا</td>
+      </tr>
+      <tr>
+        <td><img src="ahmed.jpg" alt="Ahmed"></td>
+        <td>Ahmed</td>
+        <td>لاعب ممتاز وجيد بدنيا</td>
+      </tr>
+      <tr>
+        <td><img src="bachir.jpg" alt="Bachir"></td>
+        <td>Bachir</td>
+        <td>لاعب ممتاز وجيد بدنيا</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
 <div class="contentBox" id="matchesContent">
   <h3>نتائج المباريات :</h3>
   <p>انتهت مبارات الولى بخسارة نادي سكورب ضد غزة بفارق 3 اهداف</p>
-    <h3>اوقات المباريات:</h3>
+  <h3>أوقات المباريات:</h3>
   <p>المبارات القادمة : لم يتم التحديد بعد</p>
 </div>
 
 <div class="contentBox" id="statsContent">
   <h3>الإحصائيات:</h3>
-  <p>الاهداف : محسبناش ههه</p>
-  <p>//:اسيستات </p>
-  <p>1:خسارات </p>
-  <p>0:فوز </p>
-
+  <p>الأهداف : محسبناش ههه</p>
+  <p>الاسيستات : // </p>
+  <p>خسارات : 1</p>
+  <p>فوز : 0</p>
 </div>
 
 <div class="contentBox" id="postsContent">
@@ -161,28 +213,21 @@
   const message = "مرحبا بيك في لموقع نتاع ليكيب نتاعنا لهنا نعرضوا جميع المعلومات وهاذا الموقع امن ومخدوم من طرف مارلو وللعلم هاذا الموقع تجريبي فقط";
   const words = message.split(' ');
   const introEl = document.getElementById('introText');
-  let currentLine = '';
-  let lineWordCount = 0;
-  let finalText = '';
-  let index = 0;
+  let currentLine = '', lineWordCount = 0, finalText = '', index = 0;
 
   function typeLine() {
     if (index >= words.length) {
       introEl.innerText = finalText + currentLine;
-      // بعد الكتابة، تظهر الخانات
       document.getElementById('sections').style.display = 'flex';
       return;
     }
-
     currentLine += words[index] + ' ';
     lineWordCount++;
-
     if (lineWordCount === 5) {
       finalText += currentLine.trim() + '\n';
       currentLine = '';
       lineWordCount = 0;
     }
-
     introEl.innerText = finalText + currentLine;
     index++;
     setTimeout(typeLine, 300);
